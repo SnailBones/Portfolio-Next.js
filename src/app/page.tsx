@@ -1,95 +1,150 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import Image from "next/image";
+import "./home.scss";
+import TreeCanvas from "./altissima/page";
+import About from "./about/page";
+
+const Home = () => {
+  const [isRealName, setIsRealName] = useState(false);
+
+  const evolve = () => {
+    setIsRealName(!isRealName);
+    if (isRealName) {
+      setTimeout(() => {
+        document
+          .querySelector(".gallery")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }, 1000);
+    }
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="home">
+      <div className="title-card">
+        <TreeCanvas gap={15} width={10} height={10} />
+      </div>
+
+      <h1
+        className={`signature ${isRealName ? "secret" : ""}`}
+        onClick={evolve}
+      >
+        <span className="l cap">a</span>
+        <span className="l">i</span>
+        <span className="l change L1">
+          <div className="start">l</div>
+          <div className="end">d</div>
+        </span>
+        <span className="l">a</span>
+        <span className="l">n</span>
+        <br />
+        <span className="l change T2">
+          <div className="start">t</div>
+          <div className="end"> </div>
+        </span>
+        <span className="l">h</span>
+        <span className="l change U3">
+          <div className="start">u</div>
+          <div className="end"> </div>
+        </span>
+        <span className="l change S4">
+          <div className="start">s</div>
+          <div className="end">h</div>
+        </span>
+      </h1>
+
+      <div className="content">
+        <div className="gallery">
+          {/* Thumbnail components with props */}
+          {/* Import images and videos differently in Next.js */}
         </div>
       </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div>
+        <div className="tall-dark-space">
+          <About />
+          <div className="footer">
+            <div id="footer-links">
+              <a
+                className="smallfade icon-container"
+                href="https://github.com/SnailBones"
+              >
+                {/* <Image
+                  src="/link-icons/GitHub-Mark-Light-64px.png"
+                  alt="Github"
+                  width={48}
+                  height={48}
+                /> */}
+                <img src="/link-icons/GitHub-Mark-Light-64px.png" />
+              </a>
+              <a
+                className="smallfade icon-container"
+                href="https://codepen.io/snailbones"
+              >
+                <Image
+                  src="/link-icons/codepenlogo.png"
+                  alt="Codepen"
+                  width={48}
+                  height={48}
+                />
+              </a>
+              <a
+                className="smallfade icon-container"
+                href="https://www.shadertoy.com/user/ailanthus"
+                style={{
+                  color: "white",
+                  fontFamily: "Lobster,Tahoma,Arial",
+                  fontSize: "36px",
+                }}
+              >
+                S
+              </a>
+              <div>
+                <a
+                  className="smallfade icon-container"
+                  href="https://medium.com/@snailbones"
+                >
+                  <Image
+                    src="/link-icons/medium.png"
+                    alt="Medium"
+                    width={48}
+                    height={48}
+                  />
+                </a>
+              </div>
+              <div>
+                <a
+                  className="smallfade icon-container"
+                  href="https://ailanthus.itch.io/"
+                >
+                  <Image
+                    src="/link-icons/itch.png"
+                    alt="Itch.io"
+                    width={48}
+                    height={48}
+                  />
+                </a>
+              </div>
+              <div>
+                <a
+                  className="smallfade icon-container"
+                  href="mailto:aidhendrickson@gmail.com"
+                >
+                  <Image
+                    src="/link-icons/email.svg"
+                    alt="Email"
+                    width={48}
+                    height={48}
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+  );
+};
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default Home;

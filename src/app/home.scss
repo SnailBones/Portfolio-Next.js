@@ -1,0 +1,286 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster"); // for Shadertoy logo
+
+@import "../scss/style.scss";
+
+$signature-height: 256px;
+
+html {
+  touch-action: none;
+}
+
+input,
+textarea {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  text-align: center;
+}
+
+.title-card {
+  height: 100vh;
+}
+.underbar {
+  width: 100%;
+
+  bottom: 0;
+}
+
+.my-shadow {
+  display: inline-block;
+  position: relative;
+  &:after {
+    content: "";
+    box-shadow: 0 0 32px 32px $color-dark;
+    background: $color-dark;
+
+    width: 100%;
+    height: 100%;
+
+    right: 0;
+
+    position: absolute;
+    z-index: -1;
+  }
+}
+
+.sticky {
+  z-index: 1;
+  height: $signature-height;
+  bottom: 60%;
+  position: fixed;
+
+  width: 100%;
+}
+
+.signature {
+  position: absolute;
+  top: 10%;
+  font-family: "Montserrat Alternates", helvetica, sans-serif;
+
+  color: #333;
+  mix-blend-mode: exclusion;
+  will-change: opacity;
+
+  height: 50%;
+  line-height: 0.8;
+  width: 100%;
+
+  text-align: center;
+
+  font-size: 12rem;
+  @media only screen and (min-width: 600px) {
+    font-size: 24rem;
+  }
+
+  overflow-wrap: break-word;
+
+  @media only screen and (min-width: 600px) {
+    padding: 0 100px 0 16px;
+  }
+
+  z-index: 1000;
+
+  user-select: none;
+  transition: 5s 900s;
+
+  .l {
+    display: inline-block;
+    position: relative;
+
+    margin: -0.115em;
+
+    transition: 0.4s;
+    mix-blend-mode: screen;
+
+    &.change {
+      text-align: center;
+      &.L1 {
+        text-align: right;
+        transform-origin: right;
+        .start {
+          position: absolute;
+          width: 100%;
+        }
+        .end {
+          position: relative;
+        }
+        transition-delay: 0;
+      }
+      &.T2 {
+        .start {
+        }
+
+        transition-delay: 0.11s;
+      }
+      &.U3 {
+        transition-delay: 0.22s;
+      }
+      &.S4 {
+        transform-origin: left;
+        transition-delay: 0.33s;
+
+        .end {
+          margin-left: 0.085em;
+        }
+      }
+    }
+    transform-origin: right;
+    .start {
+      transition: inherit;
+      position: relative;
+      color: #384235;
+
+      transform-origin: inherit;
+    }
+    .end {
+      transition: inherit;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      color: #393147;
+      mix-blend-mode: normal;
+      opacity: 0;
+      transform: scaleX(-1);
+
+      transform-origin: inherit;
+    }
+    &:hover {
+      color: #bcb2f3;
+      .start {
+        color: #9454ff;
+      }
+      .end {
+        color: #66ce47;
+      }
+    }
+  }
+}
+
+.signature.secret .l.change {
+  .start {
+    opacity: 0;
+    transform: scaleX(-1);
+  }
+  .end {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+.smallfade {
+  background: #181a20;
+  display: inline-block;
+  z-index: 2;
+  margin: 0px;
+  text-decoration: none;
+
+  position: relative;
+  &:after {
+    border-radius: 100%;
+    transition: 0.33s;
+
+    content: "";
+
+    right: 50%;
+    top: 50%;
+
+    margin: auto;
+
+    position: absolute;
+    z-index: 10;
+
+    mix-blend-mode: difference;
+  }
+  &:hover:after {
+    box-shadow: 0 0 8px 8px $color-light, 0 0 8px 24px $color-light;
+    background: $color-light;
+  }
+}
+
+.content {
+  background: $color-dark;
+  box-shadow: 0 0 128px 128px $color-dark;
+  display: flex;
+
+  justify-content: center;
+}
+
+.col {
+  padding: 0;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: center;
+}
+.img-container {
+  width: 40%;
+  height: 40%;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    height: 100%;
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.icon-container {
+  width: 48px;
+  transition: 0.2s;
+  border-radius: 100%;
+  box-shadow: none;
+  img {
+    width: 100%;
+  }
+}
+
+.tall-dark-space {
+  height: 100vh;
+  position: relative;
+  &:after {
+    content: "";
+    background-color: $color-dark;
+    opacity: 85%;
+    display: block;
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media only screen and (min-width: 600px) {
+    padding-right: 64px;
+    padding-left: 64px;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 100%;
+}
+
+#footer-links {
+  margin: 6rem auto 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width: 1024px;
+}

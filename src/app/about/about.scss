@@ -1,0 +1,61 @@
+@import "@/scss/style.scss";
+
+html {
+  touch-action: none;
+}
+
+input,
+textarea {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.main {
+  position: relative;
+  font-size: 4px;
+}
+
+.bottom {
+  font-size: 36px;
+}
+.greeting {
+  font-size: 60px;
+}
+
+// .smallfade {
+//   background: #181a20;
+//   display: inline-block;
+//   z-index: 2;
+//   margin: 4px;
+// }
+
+// .smallfade:after {
+//   content: "";
+//   position: relative;
+//   z-index: -1;
+//   box-shadow: 0 0 32px 32px #181a20;
+// }
+
+// .col {
+//   padding: 0;
+// }
+
+// .img-container {
+//   width: 32px;
+// }
+
+// .img-container img {
+//   width: 100%;
+// }
+
+// .container {
+//   max-width: 160px;
+//   margin-right: 64px;
+// }
