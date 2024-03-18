@@ -1,17 +1,21 @@
 import React from "react";
+import { smoothScrollTo } from "@/utils";
 
-const ScrollLink = ({ to, children }) => {
-  const handleClick = (e) => {
-    e.preventDefault();
-    document.querySelector(to)?.scrollIntoView({ behavior: "smooth" });
-    console.log("scrolling to element", to);
-  };
+export default function ScrollLink({
+    to,
+    children,
+}: {
+    to: string;
+    children: React.ReactNode;
+}) {
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        smoothScrollTo(to);
+    };
 
-  return (
-    <a href={to} onClick={handleClick}>
-      {children}
-    </a>
-  );
-};
-
-export default ScrollLink;
+    return (
+        <a href={to} onClick={handleClick}>
+            {children}
+        </a>
+    );
+}

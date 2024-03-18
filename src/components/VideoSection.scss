@@ -1,0 +1,167 @@
+.video-section {
+    flex: 1; // Allow shrink, with initial basis of 33.33%
+    height: 100vh;
+    // transition: all 0.5s ease;
+    transition: flex 0.5s ease, width 0.5s ease, visibility 0.5s ease;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+
+    &.web {
+        background: #463a3a;
+    }
+    &.games {
+        background: #232121;
+    }
+    &.other {
+        background: #240a0a;
+    }
+
+    &.expanded {
+        flex: 0 0 100%; // Allow the expanded section to take much more space
+        width: 0;
+    }
+    &.diminished {
+        flex: 0;
+        width: 0;
+        // opacity: 0; // Make it fully transparent (or use visibility: hidden;)
+    }
+}
+
+.media-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.media-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    // transition: transform 0.5s ease;
+    transition: 0.2s ease;
+
+    &.current {
+        opacity: 1;
+        z-index: 0.5;
+        transform: translateX(0);
+        opacity: 100%;
+    }
+    // &.next {
+    //     transform: translateX(100%);
+    //     transition: opacity 0.5s ease, transform 0.5s ease;
+    // }
+    // &.prev {
+    //     transform: translateX(-100%);
+    //     transition: opacity 0.5s ease, transform 0.5s ease;
+    // }
+    video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.category-label-container {
+    position: absolute;
+    bottom: 38px;
+    width: 100%;
+    text-align: center;
+}
+
+.title-container {
+    position: absolute;
+    top: 38px;
+    width: 100%;
+    text-align: center;
+}
+
+.label {
+    margin: auto;
+    width: fit-content;
+    padding: 4px 22px;
+    border-radius: 147px;
+    font-size: 55px;
+    z-index: 1;
+    background: black;
+    opacity: 0.6;
+}
+
+.description {
+    margin: auto;
+    width: fit-content;
+    padding: 4px 22px;
+    border-radius: 147px;
+    font-size: 32px;
+    z-index: 1;
+    background: black;
+    opacity: 0.6;
+}
+
+.nav-button {
+    position: absolute;
+    top: 50%; // Center vertically
+    transform: translateY(
+        -50%
+    ); // Adjust based on button height for precise vertical centering
+    cursor: pointer; // Change cursor to pointer on hover
+    margin: auto;
+    width: fit-content;
+    padding: 4px 22px;
+    border-radius: 147px;
+    border: 4px solid; // removing white border
+    font-size: 55px;
+    font-weight: bold;
+    z-index: 1;
+    background: black;
+    color: white;
+    opacity: 0.5;
+
+    transition: opacity 0.3s; // Smooth transition for hover effect
+
+    &:hover {
+        opacity: 1; // Fully opaque on hover for better visibility
+    }
+}
+
+.nav-button.prev {
+    left: 10px; // Adjust to position the button from the left side
+}
+
+.nav-button.next {
+    right: 10px; // Adjust to position the button from the right side
+}
+
+.project-container {
+    display: flex;
+    align-items: start;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    .text-container {
+        width: 0;
+        flex: 0;
+        transition: all 0.5s ease;
+        &.visible {
+            flex: 0 0 30%; // Allow the expanded section to take much more space
+        }
+    }
+}
+.mdx-content {
+    // width: 50%;
+    padding: 20px;
+    overflow-y: auto; /* For long content */
+}

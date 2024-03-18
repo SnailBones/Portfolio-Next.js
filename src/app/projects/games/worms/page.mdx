@@ -1,0 +1,17 @@
+# Worm Royale
+
+_Worm Royale_ or _King of the Worms_ reinvents a classic videogame theme in physical, active play supported by a network of sensors and projectors. A worm follows each player as they walk across the floor of a gym-like room. Players dodge other worms while collecting food to grow their own worm. Players may aim to defeat their rival woms and remain king, or to cooperate for mutual survival and growth, a popular playstyle among younger players.
+
+Play requires no controller or user equipment: the game reads depth data from a series of sensors fixed to the ceiling, and shader functions match the worms to player locations. This was the first game at Electric Playhouse to assign players to moveable characters, and ensuring reliability was a challenge, especially given the limited.
+
+I implemented worm behavior similarly to the behavior of balls in Cactris, reusing code in a common library I wrote called "Yoda.js" In both cases, shader passes blur depth data to create a virtual heightmap, then take the derivative to calculate the heightmap's slope. The blur can be likedned to the force of gravity in 2D space, or as if the players were standing on a trampoline that bends down where each player stands. The derivative operation converts the fabric's elevation into a direction, and the worms roll downhill until they settle in a pit where a player stands.
+
+Like in the classic _Snake_ games that inspired it, a worm dies upon colliding with itself or another worm. In _Kng of the Worms_, this mechanic also discourages players from getting too close together, ensuring that each remains in control of their own worm while also creating challenging and competitive play.
+
+## Performance
+
+Early tests of my tracking algorithm proved promising, but my first prototype hit performance issues due to limited sensor framerate and GPU-heavy texture operations. I overcame these issues by writing an optimized GLSL blur algorithm, which allowing the game to keep up with up to ten players.
+
+Under ideal visibility, worms keep up with players running at a full sprint. But for the best experience and safety, _Wom Royale_ is best played at a brisk walk!
+
+King of the worms can be played at [Electric Playhouse.](https://www.electricplayhouse.com/locations/albuquerque/tickets).
