@@ -1,5 +1,17 @@
 # Electric Power Fast
 
-## Simulating the Grid, kid
+## Visualizing a Fractured Grid
 
-Inspired by New Mexico's famous prickly pear cactus, this match-three game is played with the body.
+While working at RS21, I built a dashboard for Argonne National Lab's _Electric Power Fast_ simulation (aka EPFast). I worked with ANL's engineers and RS21's design team to design and build a visualization for the complex data visualizing the nation's electric grid.
+
+EPFast is a simulation of cascading disruptions to the electric power system and the resulting fragmentation of the grid. In this case, the disruption is a hurricane affecting the eastern interconnect, the interconnected circuit stretching from the Rocky Mountains to the Atlantic ocean. The data and visualization covers three affected components:
+
+Nodes include generators (i.e. power plants), loads (i.e. residential or commercial consumers of electricity) and transformers.
+
+Power lines connect the grid, showing the directional flow of energy.
+
+Islands are regions in the grid that have become isolated through disruptions of lines. Disruptions cascade through the grid, often breaking it into numerous islands. Each island is either fully powered, fully outaged, or partially outaged. Islands are visualized as polygons in their approximate area, and selecting an island highlights its lines, providing insight into its structure.
+
+Designing the visualization for islands was a complex task: they needed to be untuitive enough for nontechnical users to interact with, but display the detail necessary to inform expert's decisions. I iterated through prototypes and experimented with visualization techniques to design a visualization implementing the Voronoi algorithm.
+
+Another challenge was the large scale of the data, which contains over 10,000 nodes. At larger views, we smoothly transition the node icons into a heatmap that provides insight into locations where the most generation and load has been lost.
