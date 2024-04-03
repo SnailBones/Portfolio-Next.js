@@ -45,23 +45,26 @@ const VideoSection: React.FC<VideoSectionProps> = ({
         }
     }, [currentProjectIndex, projects]);
 
+    const changeProjectIndex = useCallback(
+        (change: number) => {
+            setCurrentProjectIndex(
+                (current) =>
+                    (current + change + projects.length) % projects.length
+            );
+        },
+        [projects.length]
+    );
+
     const resetTimer = useCallback(() => {
         if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
         autoScrollTimer.current = setInterval(
             () => changeProjectIndex(1),
             2000
         ) as NodeJS.Timeout;
-    }, []);
+    }, [changeProjectIndex]);
 
     // Start the auto-scroll timer when expanded or when closing sidebar
     useEffect(() => {
-        console.log("expandedstate or projectview changed.");
-        console.log(
-            "expandedstate is",
-            expandedState,
-            "projectview is",
-            projectView
-        );
         const expanded = expandedState === "expanded";
         if (!expanded) {
             setProjectView(false);
@@ -81,7 +84,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
             // Clear the timer when the component unmounts or before re-creating it
             if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
         };
-    }, [expandedState, projectView]);
+    }, [expandedState, projectView, currentProjectIndex, resetTimer]);
 
     useEffect(() => {}, [projectView]);
 
@@ -98,11 +101,6 @@ const VideoSection: React.FC<VideoSectionProps> = ({
     //         (currentProjectIndex + change + projects.length) % projects.length
     //     );
     // };
-    const changeProjectIndex = (change: number) => {
-        setCurrentProjectIndex(
-            (current) => (current + change + projects.length) % projects.length
-        );
-    };
 
     const switchRight = (e: React.MouseEvent) => {
         e.stopPropagation();

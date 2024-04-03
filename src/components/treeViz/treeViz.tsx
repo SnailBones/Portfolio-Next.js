@@ -9,7 +9,7 @@ interface TreeCanvasProps {
     height: number;
 }
 
-const TreeCanvas: React.FC<TreeCanvasProps> = ({ gap, width, height }) => {
+export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const count_up = 32;
@@ -372,5 +372,4 @@ const TreeCanvas: React.FC<TreeCanvasProps> = ({ gap, width, height }) => {
             <canvas ref={canvasRef}>trees</canvas>
         </div>
     );
-};
-export default TreeCanvas;
+}

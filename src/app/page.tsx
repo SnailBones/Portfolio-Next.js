@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import "./home.scss";
-import TreeCanvas from "./altissima/page";
+import TreeCanvas from "../components/treeViz/treeViz";
 import Portfolio from "@/components/Portfolio";
 import About from "./about/page";
 import ContactForm from "./contact/page";
