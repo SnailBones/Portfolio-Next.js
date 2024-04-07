@@ -41,6 +41,6 @@ jobs:
                   key: ${{ secrets.PRIVATE_KEY }}
                   script: |
                       source ~/.nvm/nvm.sh
-                      cd /var/www/portfolio
                       nvm use 20
-                      pm2 restart all
+                      cd /var/www/portfolio
+                      PORT=4000 pm2 restart portfolio || pm2 start npm --name "portfolio" -- run start
