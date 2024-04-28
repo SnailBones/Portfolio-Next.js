@@ -125,9 +125,7 @@ const Portfolio: React.FC = () => {
 
     function handleClick(label: string) {
         console.log("clicked!", label);
-        if (expandedSection === label) {
-            // setExpandedSection(null);
-        } else {
+        if (expandedSection !== label) {
             setExpandedSection(label);
             setAutoScrolling(true);
             smoothScrollTo("#portfolio").then(() => {
@@ -159,6 +157,7 @@ const Portfolio: React.FC = () => {
                         key={label}
                         projects={category.projects}
                         projectCategory={label}
+                        onClose={() => setExpandedSection(null)}
                         expandedState={
                             expandedSection
                                 ? expandedSection === label

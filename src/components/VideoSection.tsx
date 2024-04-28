@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import ProjectText from "./ProjectText";
 import "./VideoSection.scss";
-import exp from "constants";
 
 interface Project {
     src: string;
@@ -15,6 +14,7 @@ interface VideoSectionProps {
     projects: Project[];
     expandedState: string;
     portfolioOnClick: () => void;
+    onClose: () => void;
 }
 
 const VideoSection: React.FC<VideoSectionProps> = ({
@@ -22,6 +22,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
     projects,
     expandedState,
     portfolioOnClick,
+    onClose,
 }) => {
     const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
     const [projectView, setProjectView] = useState(false); // boolean
@@ -96,12 +97,6 @@ const VideoSection: React.FC<VideoSectionProps> = ({
         portfolioOnClick();
     }
 
-    // const changeProjectIndex = (change: number) => {
-    //     setCurrentProjectIndex(
-    //         (currentProjectIndex + change + projects.length) % projects.length
-    //     );
-    // };
-
     const switchRight = (e: React.MouseEvent) => {
         e.stopPropagation();
         changeProjectIndex(1);
@@ -144,6 +139,9 @@ const VideoSection: React.FC<VideoSectionProps> = ({
         >
             {expanded && (
                 <>
+                    <button className="nav-button quit" onClick={onClose}>
+                        {`x`}
+                    </button>
                     <button className="nav-button prev" onClick={switchLeft}>
                         {`<`}
                     </button>
@@ -205,9 +203,6 @@ const VideoSection: React.FC<VideoSectionProps> = ({
                         );
                     })}
                 </div>
-                {/* {expandedState === "expanded" && projectView && (
-                                <ProjectText markdownPath={project.id} />
-                            )} */}
                 {expandedState === "expanded" && (
                     <div
                         className={

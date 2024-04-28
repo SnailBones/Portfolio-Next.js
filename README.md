@@ -1,3 +1,3 @@
-2023 Portfolio built in Next.js
+2024 Portfolio built in Next.js
 
 [ailanth.us](https://ailanth.us)

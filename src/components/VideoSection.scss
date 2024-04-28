@@ -127,19 +127,25 @@
     color: white;
     opacity: 0.5;
 
-    transition: opacity 0.3s; // Smooth transition for hover effect
+    transition: opacity 0.3s;
 
     &:hover {
-        opacity: 1; // Fully opaque on hover for better visibility
+        opacity: 1;
     }
-}
 
-.nav-button.prev {
-    left: 10px; // Adjust to position the button from the left side
-}
+    &.prev {
+        left: 10px;
+    }
 
-.nav-button.next {
-    right: 10px; // Adjust to position the button from the right side
+    &.next {
+        right: 10px;
+    }
+
+    &.quit {
+        top: 10px;
+        left: 10px;
+        transform: none;
+    }
 }
 
 .project-container {
