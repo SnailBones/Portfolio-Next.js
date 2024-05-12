@@ -2,4 +2,18 @@
 
 ## Adding a 3d Globe to Mapbox
 
+### TypeScript, WebGL
+
+I worked as a Map Rendering Engineer at Mapbox from June 2021 through January 2023.
+
+One of my larger projects was implementing a 3d globe view in an engine that had formerly supported only 2d map projections. I worked with one other engineer to complete this task.
+
+Implementing globe included a number of challenges, as many assumptions that applied to 3d Mercator maps break in 3d. Even rendering a single line becomes a curve of an ellipse. For a customizable interactive engine that supports deeply customizable map styles and data, the challenges are many.
+
+As one example, the engine required significant updates to retain performance while handling zooming and data loading. Mapbox loads map tiles by checking current zoom level and map position, then loading all tiles from the zoom level's grid that intersect with the user's view. This is an efficient algorithm for 2d maps, but it rests on the assumption—baked into our front-end and back-end—of Mercator maps with a top-down, rectangular display. In a globe, the Mercator grid is no longer equally sized: tiles near the equator are larger while those near the pole are smaller. As such, we needed to simultaneously load tiles at different zoom levels. Additionally, choosing which tiles to load became a complex and performance-critical process dependent on calculation of the horizon's position.
+
+Implementing globe view required a balance of challenging such assumptions and working within their constraints.
+
 3d globes are surprisingly complicated. Consider: location data is stored in a series of grids. As we zoom in to a map, the current zoom level decides.
+e
+aoeu
