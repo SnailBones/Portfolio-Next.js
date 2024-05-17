@@ -138,8 +138,6 @@
     opacity: 1;
     // transform: scale(0.96) translateY(5%);
     transform: scale(0.96);
-    // color: black;
-    // background: grey;
   }
 
   &.prev {
@@ -176,9 +174,11 @@
   .text-container {
     width: 0;
     flex: 0;
+    height: 100vh;
+    overflow-y: scroll;
     transition: all 0.5s ease;
     &.visible {
-      flex: 0 0 30%; // Allow the expanded section to take much more space
+      flex: 0 0 50%; // Allow the expanded section to take much more space
     }
   }
 }

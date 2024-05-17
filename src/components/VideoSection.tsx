@@ -70,7 +70,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
       setProjectView(false);
     }
     if (expanded && !projectView) {
-      console.log("entering category mode. setting timer!");
+      // console.log("entering category mode. setting timer!");
       resetTimer();
     } else {
       autoScrollTimer.current = null;
@@ -86,12 +86,26 @@ const VideoSection: React.FC<VideoSectionProps> = ({
     };
   }, [expandedState, projectView, currentProjectIndex, resetTimer]);
 
-  useEffect(() => {}, [projectView]);
+  // useEffect(() => {}, [projectView]);
+
+  useEffect(() => {
+    if (expandedState === "expanded") {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        console.log("key", e.key);
+        if (e.key === "Escape") {
+          onClose();
+        }
+      };
+
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [expandedState, onClose]);
 
   function onClick() {
     if (expandedState === "expanded") {
       setProjectView(!projectView);
-      console.log("projectView set to", !projectView);
+      // console.log("projectView set to", !projectView);
     }
     portfolioOnClick();
   }
@@ -116,9 +130,9 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   const handleMouseOut = () => {
     // keep playing if in fullscreen "reel" mode
-    console.log("mouseout");
-    console.log("projectView", projectView);
-    console.log("expandedState", expandedState);
+    // console.log("mouseout");
+    // console.log("projectView", projectView);
+    // console.log("expandedState", expandedState);
     if (!projectView && !(expandedState === "expanded")) {
       videoRefs.current[currentProjectIndex]?.pause();
     }
@@ -127,7 +141,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   const expanded = expandedState === "expanded";
   const currentProject = projects[currentProjectIndex];
-  console.log("project category is", projectCategory);
+  // console.log("project category is", projectCategory);
 
   return (
     <div
@@ -186,7 +200,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
             );
           })}
         </div>
-        {expandedState === "expanded" && (
+        {expanded && (
           <div
             className={"text-container " + (projectView ? "visible" : "hidden")}
           >

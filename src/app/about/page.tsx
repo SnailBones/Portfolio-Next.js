@@ -4,11 +4,11 @@ import "./about.scss";
 import MarkdownContent from "./about.mdx";
 
 const About = () => {
-    return (
-        <div>
-            <MarkdownContent />
-        </div>
-    );
+  return (
+    <div id="about">
+      <MarkdownContent />
+    </div>
+  );
 };
 
 export default About;
