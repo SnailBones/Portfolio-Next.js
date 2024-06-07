@@ -31,6 +31,9 @@ const VideoSection: React.FC<VideoSectionProps> = ({
   );
   const autoScrollTimer = useRef<number | NodeJS.Timeout | null>(null);
 
+  const expanded = expandedState === "expanded";
+  const currentProject = projects[currentProjectIndex];
+
   useEffect(() => {
     // Adjust the array size if the number of projects changes
     videoRefs.current = new Array(projects.length).fill(null);
@@ -65,7 +68,6 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   // Start the auto-scroll timer when expanded or when closing sidebar
   useEffect(() => {
-    const expanded = expandedState === "expanded";
     if (!expanded) {
       setProjectView(false);
     }
@@ -84,43 +86,58 @@ const VideoSection: React.FC<VideoSectionProps> = ({
       // Clear the timer when the component unmounts or before re-creating it
       if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
     };
-  }, [expandedState, projectView, currentProjectIndex, resetTimer]);
+  }, [expanded, projectView, currentProjectIndex, resetTimer]);
 
   // useEffect(() => {}, [projectView]);
 
+  // useEffect(() => {
+  //   if (expanded) {
+  //     const handleKeyDown = (e: KeyboardEvent) => {
+  //       console.log("key", e.key);
+  //       if (e.key === "Escape") {
+  //         onClose();
+  //       }
+  //     };
+
+  //     document.addEventListener("keydown", handleKeyDown);
+  //     return () => document.removeEventListener("keydown", handleKeyDown);
+  //   }
+  // }, [expanded, onClose]);
+
+  function onClick() {
+    if (expandedState) {
+      setProjectView(!projectView);
+    }
+    portfolioOnClick();
+  }
+
+  const switchRight = (e: React.MouseEvent | KeyboardEvent) => {
+    e.stopPropagation();
+    changeProjectIndex(1);
+    resetTimer();
+  };
+
+  const switchLeft = (e: React.MouseEvent | KeyboardEvent) => {
+    e.stopPropagation();
+    changeProjectIndex(-1);
+    resetTimer();
+  };
+
   useEffect(() => {
-    if (expandedState === "expanded") {
+    if (expanded) {
       const handleKeyDown = (e: KeyboardEvent) => {
         console.log("key", e.key);
-        if (e.key === "Escape") {
-          onClose();
+        if (e.key === "ArrowLeft") {
+          switchLeft(e);
+        } else if (e.key === "ArrowRight") {
+          switchRight(e);
         }
       };
 
       document.addEventListener("keydown", handleKeyDown);
       return () => document.removeEventListener("keydown", handleKeyDown);
     }
-  }, [expandedState, onClose]);
-
-  function onClick() {
-    if (expandedState === "expanded") {
-      setProjectView(!projectView);
-      // console.log("projectView set to", !projectView);
-    }
-    portfolioOnClick();
-  }
-
-  const switchRight = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    changeProjectIndex(1);
-    resetTimer();
-  };
-
-  const switchLeft = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    changeProjectIndex(-1);
-    resetTimer();
-  };
+  }, [expanded]);
 
   const handleMouseOver = () => {
     if (videoRefs.current[currentProjectIndex]) {
@@ -133,14 +150,11 @@ const VideoSection: React.FC<VideoSectionProps> = ({
     // console.log("mouseout");
     // console.log("projectView", projectView);
     // console.log("expandedState", expandedState);
-    if (!projectView && !(expandedState === "expanded")) {
+    if (!projectView && !expanded) {
       videoRefs.current[currentProjectIndex]?.pause();
     }
   };
   // todo: pause video on unload
-
-  const expanded = expandedState === "expanded";
-  const currentProject = projects[currentProjectIndex];
   // console.log("project category is", projectCategory);
 
   return (

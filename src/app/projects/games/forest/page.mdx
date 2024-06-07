@@ -1,3 +1,19 @@
-# Cell Forest
+# A Tree Falls: The Musical
 
-A game built upon the forest
+## Interactive ecology sim set to live data-driven music
+
+_A Tree Falls: The Musical_ is an experimental game that simulates interacting with an ecosystem outside of the usual constraints of time, space and power. Initially created for a graduate-level course in Computational Ecology at UNM, I later expanded upon the game to make the data sing with interactive procedural music.
+
+### Ecosystem
+
+The ecosystem simulated is a northern forest comprised of two species of trees: evergreen, triangular spruce, and deciduous branched birch. The hardier spruce dominates in undisturbed stands, but when trees are destroyed by fire—created with the mouse in this simulation—the faster growing birch colonizes the barren area. Two much or two little fire and one species goes extinct, but regular, moderate fires allow them to coexist.
+
+### Sound
+
+The game is an experiment is realtime data sonification, or conveying information through sound. Continuously playing sounds represent trees in different processes (growing, dying, burning and sprouting). Pitch and timbre are determined by the number of each species in each process. The sounds are quantized to different scales to form pleasant harmonies from their ever-changing states. Repeated motifs in the music correspond to cycles in the simulation.
+
+### Implementation
+
+I built the simulation in C++ and the interface in Godot. Source code is available on [Github](https://github.com/SnailBones/CellForest).
+
+The simulation is a cellular automaton, inspired by John Conway's "Game of Life." Tree survival, growth, and reproduction depends on available water in the tree's cell. Water travel between cells through convection, simulating competition between the trees' roots and giving a competitive advantage to the more drought-tolerant spruce. Water flows downhill, creating lusher riparian environments in valleys and reshaping the terrain through erosion and deposition.

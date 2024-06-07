@@ -48,6 +48,7 @@ const Portfolio: React.FC = () => {
     router.push("/", { scroll: false });
   }
 
+  // Routing
   const params = useParams();
 
   useEffect(() => {
@@ -57,6 +58,20 @@ const Portfolio: React.FC = () => {
       expandSection(hash.slice(1));
     }
   }, [params]);
+
+  useEffect(() => {
+    if (expandedSection) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        console.log("key", e.key);
+        if (e.key === "Escape") {
+          handleClose();
+        }
+      };
+
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [expandedSection]);
 
   return (
     <div className="portfolio">

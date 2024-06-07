@@ -1,3 +1,4 @@
+@import "../scss/style.scss";
 .video-section {
   flex: 1; // Allow shrink, with initial basis of 33.33%
   height: 100vh;
@@ -6,25 +7,13 @@
   position: relative;
   cursor: pointer;
   overflow: hidden;
-
-  &.web {
-    background: #463a3a;
-  }
-  &.games {
-    background: #232121;
-  }
-  &.other {
-    background: #240a0a;
-  }
+  background: $color-dark;
 
   &.expanded {
-    flex: 0 0 100%; // Allow the expanded section to take much more space
-    width: 0;
+    flex: 0 0 100%;
   }
   &.diminished {
     flex: 0;
-    width: 0;
-    // opacity: 0; // Make it fully transparent (or use visibility: hidden;)
   }
 }
 
@@ -42,7 +31,6 @@
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  // transition: transform 0.5s ease;
   transition: 0.2s ease;
 
   &.current {
@@ -165,14 +153,17 @@
 .project-container {
   display: flex;
   align-items: start;
-  flex-direction: row;
   width: 100%;
   height: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
+  flex-direction: row;
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
 
   .text-container {
-    width: 0;
+    // width: 0;
     flex: 0;
     height: 100vh;
     overflow-y: scroll;
@@ -184,6 +175,6 @@
 }
 .mdx-content {
   // width: 50%;
-  padding: 20px;
+  padding: 40px;
   overflow-y: auto; /* For long content */
 }
