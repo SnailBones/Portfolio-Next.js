@@ -1,3 +1,17 @@
 # Cactris
 
-Inspired by New Mexico's famous prickly pear cactus, this match-three game is played with the body.
+### A puzzle game played with the body.
+
+_Cactris_ is a math-three puzzle game at human scale. Using projectors and sensors, the game appears on a wall, and players move their limbs to catch, push and toss virtual balls. Balls combine to form prickly pear cactuses, and the player's goal is to match ball colors to score points and manage the growth of their cactus garden. Cactus can be played solo or by two people in cooperation.
+
+To build Cactris, I developed a custom 2D physics engine powered by shaders. A series of shader passes transform sensor depth data into physics forces. First, a step function is applied to depth data, creating a "shadow" of players position in front of the wall. Next, the shadow is blurred to create a smooth gradient and reduce noise, then a derivative shader pass provides the direction and magnitude of change within the blurred shadow. You can think of this as a grid of virtual arrows pointing away from solid objects—at every gameplay frame, we sample the texture at each ball's center and apply the value as a force to the ball. In effect, virtual balls are repelled by real bodies, creating the illusion of interacting with real, solid objects.
+
+Cactris was conceived from a design challenge I faced at Electric Playhouse. I built the physics engine with the intention of supporting a competitive two-player ball game along the lines of volleyball or basketball. Testing initial prototypes, I observed that players instinctively swung and kicked at the ball with fast-moving strikes, and the ball would shoot off in unexpected directions. Unfortunately, limited to 30fps, our sensors were inadequate for capturing these fast motions, resulting in unpredictable game behavior and predictable player frustration.
+
+I reevaluated game design given this limitation. First, I addressed ball movement. By adding a high air resistance, balls became slower and seemingly lighter, and transformed from virtual soccer balls into virtual balloons. Players took to interacting with them as such: instead of striking them, they would bounce and gently guide them. This motions avoided the framerate issue, creating satisfyingly reliable interactions.
+
+I had created a "balloon simulator," a virtual toy that players enjoyed interacting with. With the physics in place, I set to rebuild my toy into a goal-oriented game to increase player engagement.
+
+In order to draw from visual languages that visitors would be familiar with, I looked to the tile matching puzzle game genre for inspiration. Tile matching games are popular and striking, and include both the best selling and most played mobile game of all time. Critically, players of games like Tetris and Candy Crush include many people who otherwise have little experience with video games. By grounding its novel interaction mechanism in broadly recognizable gameplay mechanics, Cactris remains accessible to visitors of all ages and experiences.
+
+To improve accessibility for players without full color vision, I introduced distinct shapes inside of each ball color. Final touches include bonus points for combos, harmonic sound effects on ball interactions, and a subtle perspective background where the cactus trees cast shadows.
