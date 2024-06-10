@@ -2,7 +2,7 @@
 
 ### A puzzle game played with the body.
 
-_Cactris_ is a math-three puzzle game at human scale. Using projectors and sensors, the game appears on a wall, and players move their limbs to catch, push and toss virtual balls. Balls combine to form prickly pear cactuses, and the player's goal is to match ball colors to score points and manage the growth of their cactus garden. Cactus can be played solo or by two people in cooperation.
+_Cactris_ is a match-three puzzle game at human scale. Using projectors and sensors, the game appears on a wall, and players move their limbs to catch, push and toss virtual balls. Balls combine to form prickly pear cactuses, and the player's goal is to match ball colors to score points and manage the growth of their cactus garden. Cactus can be played solo or by two people in cooperation.
 
 To build Cactris, I developed a custom 2D physics engine powered by shaders. A series of shader passes transform sensor depth data into physics forces. First, a step function is applied to depth data, creating a "shadow" of players position in front of the wall. Next, the shadow is blurred to create a smooth gradient and reduce noise, then a derivative shader pass provides the direction and magnitude of change within the blurred shadow. You can think of this as a grid of virtual arrows pointing away from solid objects—at every gameplay frame, we sample the texture at each ball's center and apply the value as a force to the ball. In effect, virtual balls are repelled by real bodies, creating the illusion of interacting with real, solid objects.
 
