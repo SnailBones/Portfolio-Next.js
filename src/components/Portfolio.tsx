@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname, useParams } from "next/navigation";
 import VideoSection from "../components/VideoSection";
 import { smoothScrollTo } from "@/utils";
@@ -22,17 +22,13 @@ const videoSections = [
 
 const Portfolio: React.FC = () => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
-  const [autoScrolling, setAutoScrolling] = useState<boolean>(false);
 
   const router = useRouter();
 
   function expandSection(label: string) {
     setExpandedSection(label);
-    setAutoScrolling(true);
     document.body.style.overflow = "hidden";
-    smoothScrollTo("#portfolio").then(() => {
-      setAutoScrolling(false);
-    });
+    smoothScrollTo("#portfolio");
   }
 
   function handleClick(label: string) {
@@ -42,11 +38,11 @@ const Portfolio: React.FC = () => {
     }
   }
 
-  function handleClose() {
+  const handleClose = useCallback(() => {
     document.body.style.overflow = "unset";
     setExpandedSection(null);
     router.push("/", { scroll: false });
-  }
+  }, [setExpandedSection, router]);
 
   // Routing
   const params = useParams();
@@ -55,7 +51,6 @@ const Portfolio: React.FC = () => {
     const hash = window.location.hash.slice(1);
     console.log("hash is", hash);
     if (hash && sectionNames.includes(hash)) {
-      console.log("hash passed regex", hash);
       expandSection(hash);
     }
   }, [params]);
@@ -63,7 +58,6 @@ const Portfolio: React.FC = () => {
   useEffect(() => {
     if (expandedSection) {
       const handleKeyDown = (e: KeyboardEvent) => {
-        console.log("key", e.key);
         if (e.key === "Escape") {
           handleClose();
         }
@@ -72,7 +66,7 @@ const Portfolio: React.FC = () => {
       document.addEventListener("keydown", handleKeyDown);
       return () => document.removeEventListener("keydown", handleKeyDown);
     }
-  }, [expandedSection]);
+  }, [expandedSection, handleClose]);
 
   return (
     <div className="portfolio">

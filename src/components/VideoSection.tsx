@@ -111,17 +111,24 @@ const VideoSection: React.FC<VideoSectionProps> = ({
     portfolioOnClick();
   }
 
-  const switchRight = (e: React.MouseEvent | KeyboardEvent) => {
-    e.stopPropagation();
-    changeProjectIndex(1);
-    resetTimer();
-  };
+  const switchRight = useCallback(
+    (e: React.MouseEvent | KeyboardEvent) => {
+      console.log("switching right");
+      e.stopPropagation();
+      changeProjectIndex(1);
+      resetTimer();
+    },
+    [changeProjectIndex, resetTimer]
+  );
 
-  const switchLeft = (e: React.MouseEvent | KeyboardEvent) => {
-    e.stopPropagation();
-    changeProjectIndex(-1);
-    resetTimer();
-  };
+  const switchLeft = useCallback(
+    (e: React.MouseEvent | KeyboardEvent) => {
+      e.stopPropagation();
+      changeProjectIndex(-1);
+      resetTimer();
+    },
+    [changeProjectIndex, resetTimer]
+  );
 
   useEffect(() => {
     if (expanded) {
@@ -137,7 +144,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
       document.addEventListener("keydown", handleKeyDown);
       return () => document.removeEventListener("keydown", handleKeyDown);
     }
-  }, [expanded]);
+  }, [expanded, switchLeft, switchRight]);
 
   const handleMouseOver = () => {
     if (videoRefs.current[currentProjectIndex]) {
@@ -147,15 +154,11 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   const handleMouseOut = () => {
     // keep playing if in fullscreen "reel" mode
-    // console.log("mouseout");
-    // console.log("projectView", projectView);
-    // console.log("expandedState", expandedState);
     if (!projectView && !expanded) {
       videoRefs.current[currentProjectIndex]?.pause();
     }
   };
   // todo: pause video on unload
-  // console.log("project category is", projectCategory);
 
   return (
     <div
