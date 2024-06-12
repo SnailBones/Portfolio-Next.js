@@ -12,10 +12,12 @@ interface Section {
 
 import { web, games, other } from "../components/Projects";
 
+const sectionNames = ["web", "games", "other"];
+
 const videoSections = [
-  { label: "web", projects: web },
-  { label: "games", projects: games },
-  { label: "other", projects: other },
+  { label: sectionNames[0], projects: web },
+  { label: sectionNames[1], projects: games },
+  { label: sectionNames[2], projects: other },
 ];
 
 const Portfolio: React.FC = () => {
@@ -25,8 +27,6 @@ const Portfolio: React.FC = () => {
   const router = useRouter();
 
   function expandSection(label: string) {
-    // if (label[0] !== "#") label = `#${label}`;
-    console.log("expanding section", label);
     setExpandedSection(label);
     setAutoScrolling(true);
     document.body.style.overflow = "hidden";
@@ -52,10 +52,11 @@ const Portfolio: React.FC = () => {
   const params = useParams();
 
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      console.log("Hash:", hash);
-      expandSection(hash.slice(1));
+    const hash = window.location.hash.slice(1);
+    console.log("hash is", hash);
+    if (hash && sectionNames.includes(hash)) {
+      console.log("hash passed regex", hash);
+      expandSection(hash);
     }
   }, [params]);
 
