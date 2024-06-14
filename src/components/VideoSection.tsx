@@ -72,7 +72,6 @@ const VideoSection: React.FC<VideoSectionProps> = ({
       setProjectView(false);
     }
     if (expanded && !projectView) {
-      // console.log("entering category mode. setting timer!");
       resetTimer();
     } else {
       autoScrollTimer.current = null;
@@ -87,22 +86,6 @@ const VideoSection: React.FC<VideoSectionProps> = ({
       if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
     };
   }, [expanded, projectView, currentProjectIndex, resetTimer]);
-
-  // useEffect(() => {}, [projectView]);
-
-  // useEffect(() => {
-  //   if (expanded) {
-  //     const handleKeyDown = (e: KeyboardEvent) => {
-  //       console.log("key", e.key);
-  //       if (e.key === "Escape") {
-  //         onClose();
-  //       }
-  //     };
-
-  //     document.addEventListener("keydown", handleKeyDown);
-  //     return () => document.removeEventListener("keydown", handleKeyDown);
-  //   }
-  // }, [expanded, onClose]);
 
   function onClick() {
     if (expandedState) {

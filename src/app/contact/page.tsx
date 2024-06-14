@@ -6,21 +6,6 @@ export default function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [messageSent, setMessageSent] = useState(false);
   const [error, setError] = useState(false);
-  //   useEffect(() => {
-  //     if (window.location.hash) {
-  //       console.log("hash", window.location.hash);
-  //       setTimeout(() => {
-  //         const id = window.location.hash.replace("#", "");
-  //         const element = document.getElementById(id);
-  //         if (element) {
-  //           element.scrollIntoView({
-  //             behavior: "smooth",
-  //             block: "start",
-  //           });
-  //         }
-  //       }, 0);
-  //     }
-  //   }, []);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

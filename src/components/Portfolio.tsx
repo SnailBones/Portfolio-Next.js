@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { useRouter, usePathname, useParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import VideoSection from "../components/VideoSection";
 import { smoothScrollTo } from "@/utils";
 
