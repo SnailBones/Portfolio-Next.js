@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import ProjectText from "./ProjectText";
 import "./VideoSection.scss";
+import { useRouter, usePathname } from "next/navigation";
 
 interface Project {
   src: string;
@@ -17,6 +18,8 @@ interface VideoSectionProps {
   onClose: () => void;
 }
 
+// TODO: either enable switching path or hide arrows on project view
+
 const VideoSection: React.FC<VideoSectionProps> = ({
   projectCategory,
   projects,
@@ -31,13 +34,32 @@ const VideoSection: React.FC<VideoSectionProps> = ({
   );
   const autoScrollTimer = useRef<number | NodeJS.Timeout | null>(null);
 
-  const expanded = expandedState === "expanded";
+  const router = useRouter();
+  const pathname = usePathname();
+
+  console.log("expandedState", expandedState); // TODO: why is this empty state on load with a project open?
+  const expanded = expandedState === "expanded"; // Video takes up fullscreen (or at least > 1/3 screen)
   const currentProject = projects[currentProjectIndex];
 
   useEffect(() => {
-    // Adjust the array size if the number of projects changes
-    videoRefs.current = new Array(projects.length).fill(null);
-  }, [projects.length]);
+    const [_, section, project] = pathname.split("/");
+    if (project) {
+      // console.log("project is", project);
+      const projectIds = projects.map((p) => p.id);
+      const projectIndex = projectIds.indexOf(project);
+      if (projectIndex !== -1) {
+        setCurrentProjectIndex(projectIndex); // "Scroll" to project
+        setProjectView(true); // Open description
+      }
+    } else {
+      setProjectView(false); // Close description if path has no project
+    }
+  }, [pathname, projects]);
+
+  // useEffect(() => {
+  //   // Adjust the array size if the number of projects changes
+  //   videoRefs.current = new Array(projects.length).fill(null);
+  // }, [projects.length]);
 
   useEffect(() => {
     const currentVideo = videoRefs.current[currentProjectIndex];
@@ -66,12 +88,30 @@ const VideoSection: React.FC<VideoSectionProps> = ({
     ) as NodeJS.Timeout;
   }, [changeProjectIndex]);
 
-  // Start the auto-scroll timer when expanded or when closing sidebar
+  const toggleDescription = useCallback(
+    (visible: boolean) => {
+      // console.log("toggling description");
+      // setProjectView(visible); // todo: move to useeffect
+      const [_, section, project] = pathname.split("/");
+      if (visible) {
+        router.push(`${section}/${currentProject.id}`, { scroll: false });
+        console.log("opening, pushing", `${currentProject.id}`);
+        // router.push(`${currentProject.id}`, { scroll: false });
+      } else {
+        router.push(`/${section}`, { scroll: false });
+        // router.push(`..`, { scroll: false });
+        console.log("closing, pushing pushing /$section");
+      }
+    },
+    [currentProject.id, pathname, router]
+  );
+
+  // Start the auto-scroll timer when expanded or when closing description
   useEffect(() => {
-    if (!expanded) {
-      setProjectView(false);
-    }
-    if (expanded && !projectView) {
+    // Hide description when closing
+    if (expandedState === "") {
+      toggleDescription(false);
+    } else if (expanded && !projectView) {
       resetTimer();
     } else {
       autoScrollTimer.current = null;
@@ -85,11 +125,18 @@ const VideoSection: React.FC<VideoSectionProps> = ({
       // Clear the timer when the component unmounts or before re-creating it
       if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
     };
-  }, [expanded, projectView, currentProjectIndex, resetTimer]);
+  }, [
+    expanded,
+    expandedState,
+    projectView,
+    currentProjectIndex,
+    resetTimer,
+    toggleDescription,
+  ]);
 
   function onClick() {
     if (expandedState) {
-      setProjectView(!projectView);
+      toggleDescription(!projectView);
     }
     portfolioOnClick();
   }

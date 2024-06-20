@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import VideoSection from "../components/VideoSection";
 import { smoothScrollTo } from "@/utils";
 
@@ -24,6 +24,7 @@ const Portfolio: React.FC = () => {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
 
   const router = useRouter();
+  const pathname = usePathname();
 
   function expandSection(label: string) {
     setExpandedSection(label);
@@ -33,8 +34,7 @@ const Portfolio: React.FC = () => {
 
   function handleClick(label: string) {
     if (expandedSection !== label) {
-      router.push(`#${label}`);
-      expandSection(label);
+      router.push(`/${label}`, { scroll: false });
     }
   }
 
@@ -44,16 +44,13 @@ const Portfolio: React.FC = () => {
     router.push("/", { scroll: false });
   }, [setExpandedSection, router]);
 
-  // Routing
-  const params = useParams();
-
   useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    console.log("hash is", hash);
-    if (hash && sectionNames.includes(hash)) {
-      expandSection(hash);
+    // const section = pathname.slice(1);
+    const [_, section, subSection] = pathname.split("/");
+    if (section && sectionNames.includes(section)) {
+      expandSection(section);
     }
-  }, [params]);
+  }, [pathname]);
 
   useEffect(() => {
     if (expandedSection) {
