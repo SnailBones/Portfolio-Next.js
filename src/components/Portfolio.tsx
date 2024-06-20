@@ -21,16 +21,16 @@ const videoSections = [
 ];
 
 const Portfolio: React.FC = () => {
-  const [expandedSection, setExpandedSection] = useState<string | null>(null);
-
   const router = useRouter();
   const pathname = usePathname();
 
-  function expandSection(label: string) {
-    setExpandedSection(label);
+  const [_, section, subSection] = pathname.split("/");
+  const expandedSection = section;
+
+  const expandSection = useCallback((label: string) => {
     document.body.style.overflow = "hidden";
     smoothScrollTo("#portfolio");
-  }
+  }, []);
 
   function handleClick(label: string) {
     if (expandedSection !== label) {
@@ -39,21 +39,21 @@ const Portfolio: React.FC = () => {
   }
 
   const handleClose = useCallback(() => {
-    document.body.style.overflow = "unset";
-    setExpandedSection(null);
+    document.body.style.overflow = "unset"; // perhaps set this in response to path
+    // setExpandedSection(null);
+    console.log("handnling close!");
     router.push("/", { scroll: false });
-  }, [setExpandedSection, router]);
+  }, [router]);
 
   useEffect(() => {
-    // const section = pathname.slice(1);
-    const [_, section, subSection] = pathname.split("/");
-    if (section && sectionNames.includes(section)) {
-      expandSection(section);
+    if (expandedSection && sectionNames.includes(expandedSection)) {
+      expandSection(expandedSection);
     }
-  }, [pathname]);
+  }, [expandedSection, expandSection]);
 
   useEffect(() => {
-    if (expandedSection) {
+    const [_, section, subSection] = pathname.split("/");
+    if (section) {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
           handleClose();
@@ -63,7 +63,7 @@ const Portfolio: React.FC = () => {
       document.addEventListener("keydown", handleKeyDown);
       return () => document.removeEventListener("keydown", handleKeyDown);
     }
-  }, [expandedSection, handleClose]);
+  }, [pathname, handleClose]);
 
   return (
     <div className="portfolio">

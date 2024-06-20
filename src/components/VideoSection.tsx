@@ -37,7 +37,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  console.log("expandedState", expandedState); // TODO: why is this empty state on load with a project open?
+  console.log("expandedState", expandedState);
   const expanded = expandedState === "expanded"; // Video takes up fullscreen (or at least > 1/3 screen)
   const currentProject = projects[currentProjectIndex];
 
@@ -160,6 +160,11 @@ const VideoSection: React.FC<VideoSectionProps> = ({
     [changeProjectIndex, resetTimer]
   );
 
+  const onClickX = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onClose();
+  };
+
   useEffect(() => {
     if (expanded) {
       const handleKeyDown = (e: KeyboardEvent) => {
@@ -199,7 +204,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
     >
       {expanded && (
         <>
-          <button className="nav-button quit" onClick={onClose}>
+          <button className="nav-button quit" onClick={onClickX}>
             <div className="inner-button">{`x`}</div>
           </button>
           <button className="nav-button prev" onClick={switchLeft}>
