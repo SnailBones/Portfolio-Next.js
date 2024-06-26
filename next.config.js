@@ -13,25 +13,10 @@ const nextConfig = {
         source: "/(games|web|other)/:project",
         destination: "/",
       },
-      {
-        source: "/:fallback",
-        destination: "/",
-      },
-    ];
-  },
-  async redirects() {
-    return [
-      // Basic redirect
-      {
-        source: "/about",
-        destination: "/",
-        permanent: true,
-      },
-      {
-        source: "/project/:projectName",
-        destination: "/#:projectName",
-        permanent: true,
-      },
+      // {
+      //   source: "/:fallback",
+      //   destination: "/",
+      // },
     ];
   },
 };

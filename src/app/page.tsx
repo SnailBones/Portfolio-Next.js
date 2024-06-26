@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 // import { useRouter, usePathname } from "next/navigation";
+import RedirectHandler from "../components/RedirectHandler";
 import "./home.scss";
 import TreeCanvas from "../components/treeViz/treeViz";
 import Portfolio from "@/components/Portfolio";
@@ -26,7 +27,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <RedirectHandler>
       <div className="background">
         <TreeCanvas gap={15} width={10} height={10} />
       </div>
@@ -76,7 +77,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </div>
+    </RedirectHandler>
   );
 };
 
