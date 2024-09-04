@@ -41,7 +41,6 @@ const Portfolio: React.FC = () => {
   const handleClose = useCallback(() => {
     document.body.style.overflow = "unset"; // perhaps set this in response to path
     // setExpandedSection(null);
-    console.log("handnling close!");
     router.push("/", { scroll: false });
   }, [router]);
 
