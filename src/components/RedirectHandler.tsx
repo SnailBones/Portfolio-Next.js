@@ -17,8 +17,6 @@ const RedirectHandler: React.FC<RedirectHandlerProps> = ({ children }) => {
     if (match) {
       const projectId = match[1];
 
-      const games = ["cactris", "forest", "worms"];
-
       const projectRedirects: { [key: string]: string } = {
         grid: `/web/grid`,
         run: `/games/runner`,

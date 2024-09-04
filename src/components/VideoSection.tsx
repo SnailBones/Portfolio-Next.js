@@ -37,7 +37,6 @@ const VideoSection: React.FC<VideoSectionProps> = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  console.log("expandedState", expandedState);
   const expanded = expandedState === "expanded"; // Video takes up fullscreen (or at least > 1/3 screen)
   const currentProject = projects[currentProjectIndex];
 
@@ -95,12 +94,12 @@ const VideoSection: React.FC<VideoSectionProps> = ({
       const [_, section, project] = pathname.split("/");
       if (visible) {
         router.push(`${section}/${currentProject.id}`, { scroll: false });
-        console.log("opening, pushing", `${currentProject.id}`);
+        // console.log("opening, pushing", `${currentProject.id}`);
         // router.push(`${currentProject.id}`, { scroll: false });
       } else {
         router.push(`/${section}`, { scroll: false });
         // router.push(`..`, { scroll: false });
-        console.log("closing, pushing pushing /$section");
+        // console.log("closing, pushing pushing /$section");
       }
     },
     [currentProject.id, pathname, router]

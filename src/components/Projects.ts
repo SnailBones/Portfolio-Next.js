@@ -4,18 +4,21 @@ const web = [
     name: "Mapbox Globe",
     src: "globe/globe.webm",
     description: "Adding a globe view to Mapbox GL JS.",
+    tools: ["TypeScript (Flow)", "WebGL"],
   },
   {
     id: "grid",
     name: "Electric Power Fast",
     src: "epfast/loop.webm",
     description: "Vizualizing chaos in the grid.",
+    tools: ["JavaScript", "Vue.js", "Mapbox GL JS"],
   },
   {
     id: "forage",
     name: "Forage Albuquerque",
     src: "forage/home.png",
     description: "A responsive app introducing beginners to foraging.",
+    tools: ["React", "Next.js", "TypeScript"],
   },
   {
     id: "okeeffe",
@@ -41,6 +44,7 @@ const games = [
     name: "A Tree Falls: the Musical",
     src: "forest/forest.webm",
     description: "An interactive ecology simulation to procedural music.",
+    tools: ["C++", "Godot"],
   },
   {
     id: "worms",
@@ -55,13 +59,13 @@ const games = [
     name: "Prism Escape",
     src: "runner/runner.webm",
     description:
-      "Move your body to race through a virtual landscape in this fast-paced agility game.",
+      "Move your body to race through a virtual landscape in this AR agility game.",
     year: 2019,
     tools: ["JavaScript", "GLSL"],
   },
   {
     id: "trees",
-    name: "What Trees were",
+    name: "What Trees Were",
     src: "trees/sea-serpent.webm",
     description: "Customizable 3d tree engine.",
     tools: ["Java"],
@@ -79,11 +83,11 @@ const games = [
 
 const other = [
   {
-    id: "bush",
+    id: "gan",
     name: "Renaissance GAN",
     src: "gan/bush.webm",
     description:
-      "A bush generated using a Generative Adversarial Network (GAN).",
+      "A Convolutional Generative Adversarial Network for Creating Music and Art.",
   },
   {
     id: "nature",
@@ -92,11 +96,10 @@ const other = [
     description: "Design for a museum exhibit bringing the diorama up-to-date.",
   },
   {
-    id: "painless",
-    name: "Painless",
+    id: "plays",
+    name: "Plays",
     src: "painless/set.jpg",
-    description:
-      "A play about pain, loss and choice in a world where technology enables all experiences.",
+    description: "",
   },
 ];
 
