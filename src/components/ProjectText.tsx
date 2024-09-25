@@ -8,6 +8,7 @@ interface ProjectTextProps {
 }
 
 const ProjectText: React.FC<ProjectTextProps> = ({ markdownPath }) => {
+  console.log("markdownPath is: ", markdownPath);
   const ComponentA = dynamic(() => import(`@/app/projects/` + markdownPath));
   return (
     <div className="mdx-content">

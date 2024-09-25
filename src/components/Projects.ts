@@ -1,3 +1,12 @@
+export type Project = {
+  id: string;
+  name: string;
+  src: string;
+  description: string;
+  year?: number;
+  tools?: string[];
+};
+
 const web = [
   {
     id: "globe",

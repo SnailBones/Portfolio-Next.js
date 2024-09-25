@@ -12,11 +12,8 @@ import Footer from "@/components/Footer";
 import { smoothScrollTo } from "@/utils";
 
 const Home = () => {
-  //   const router = useRouter();
   const [isRealName, setIsRealName] = useState(false);
 
-  //   const pathname = usePathname();
-  //   console.log("Current pathname:", pathname);
   const evolve = () => {
     if (!isRealName) {
       setTimeout(() => {

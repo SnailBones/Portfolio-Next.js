@@ -2,25 +2,67 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { GetStaticProps } from "next";
 import VideoSection from "../components/VideoSection";
 import { smoothScrollTo } from "@/utils";
+import { web, games, other, Project } from "../components/Projects";
 
 interface Section {
   label: string;
   src: string;
 }
 
-import { web, games, other } from "../components/Projects";
+type PortfolioProps = {
+  selectedProjects: Project[];
+};
 
-const sectionNames = ["web", "games", "other"];
+const allProjects = [...web, ...games, ...other];
+// const sectionNames = ["web", "games", "other"];
+const filteredProjects = allProjects;
+if (filteredProjects.length < 3) {
+  console.error("TODO: handle < 3 valid projects");
+}
 
-const videoSections = [
-  { label: sectionNames[0], projects: web },
-  { label: sectionNames[1], projects: games },
-  { label: sectionNames[2], projects: other },
-];
+function pickRandomProjects<T>(projects: T[], count: number): T[] {
+  const length = projects.length;
 
-const Portfolio: React.FC = () => {
+  if (count > length) {
+    throw new Error("count greater than the array length");
+  }
+
+  const indices = new Set<number>();
+  while (indices.size < count) {
+    const randomIndex = Math.floor(Math.random() * length);
+    indices.add(randomIndex);
+  }
+
+  return Array.from(indices).map((index) => projects[index]);
+}
+
+const indices = new Set<number>();
+while (indices.size < 3) {
+  const randomIndex = Math.floor(Math.random() * filteredProjects.length);
+  indices.add(randomIndex);
+}
+
+const projects = Array.from(indices).map((index) => filteredProjects[index]);
+// const videoSections = [
+//   { label: sectionNames[0], projects: web },
+//   { label: sectionNames[1], projects: games },
+//   { label: sectionNames[2], projects: other },
+// ];
+
+export const getStaticProps: GetStaticProps = async () => {
+  const chosenProjects = pickRandomProjects(projects, 3);
+
+  return {
+    props: {
+      chosenProjects,
+    },
+  };
+};
+
+const Portfolio = ({ selectedProjects }: PortfolioProps) => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -32,9 +74,11 @@ const Portfolio: React.FC = () => {
     smoothScrollTo("#portfolio");
   }, []);
 
-  function handleClick(label: string) {
-    if (expandedSection !== label) {
-      router.push(`/${label}`, { scroll: false });
+  function handleClick(id: number) {
+    const project = projects[id].id;
+    console.log("clicked on id", id, "project name", project);
+    if (expandedSection !== project) {
+      router.push(`games/${project}`, { scroll: false });
     }
   }
 
@@ -44,11 +88,11 @@ const Portfolio: React.FC = () => {
     router.push("/", { scroll: false });
   }, [router]);
 
-  useEffect(() => {
-    if (expandedSection && sectionNames.includes(expandedSection)) {
-      expandSection(expandedSection);
-    }
-  }, [expandedSection, expandSection]);
+  // useEffect(() => {
+  //   if (expandedSection && sectionNames.includes(expandedSection)) {
+  //     expandSection(expandedSection);
+  //   }
+  // }, [expandedSection, expandSection]);
 
   useEffect(() => {
     const [_, section, subSection] = pathname.split("/");
@@ -66,23 +110,26 @@ const Portfolio: React.FC = () => {
 
   return (
     <div className="portfolio">
-      {videoSections.map((category) => {
-        const label = category.label;
+      {selectedProjects.map((p, i) => {
+        // const label = category.label;
         return (
-          <VideoSection
-            key={label}
-            projects={category.projects}
-            projectCategory={label}
-            onClose={handleClose}
-            expandedState={
-              expandedSection
-                ? expandedSection === label
-                  ? "expanded"
-                  : "diminished"
-                : ""
-            }
-            portfolioOnClick={() => handleClick(label)}
-          />
+          <>
+            <VideoSection
+              key={p.id}
+              project={p}
+              onClose={handleClose}
+              expandedState={
+                expandedSection
+                  ? expandedSection === "games"
+                    ? "expanded"
+                    : "diminished"
+                  : ""
+              }
+              portfolioOnClick={() => handleClick(i)}
+            />
+            <h2>{p.name}</h2>
+            <p>{p.description}</p>
+          </>
         );
       })}
     </div>
