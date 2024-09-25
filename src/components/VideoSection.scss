@@ -2,7 +2,6 @@
 .video-section {
   flex: 1; // Allow shrink, with initial basis of 33.33%
   height: 100vh;
-  // transition: all 0.5s ease;
   transition: flex 0.5s ease, width 0.5s ease, visibility 0.5s ease;
   position: relative;
   cursor: pointer;

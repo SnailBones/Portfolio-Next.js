@@ -58,6 +58,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   useEffect(() => {
     const currentVideo = videoRef.current;
+    console.log("currentVideo is", currentVideo);
     if (currentVideo) {
       // currentVideo.load();videoRefs
       currentVideo
@@ -85,8 +86,8 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   const toggleDescription = useCallback(
     (visible: boolean) => {
-      console.log("toggling description");
-      console.log("pathname is", pathname);
+      // console.log("toggling description");
+      // console.log("pathname is", pathname);
       // setProjectView(visible); // todo: move to useeffect
       const [_, section, project] = pathname.split("/");
       // if (visible) {
@@ -218,11 +219,11 @@ const VideoSection: React.FC<VideoSectionProps> = ({
           </div>
         )}
       </div>
-      {/* {!projectView && (
+      {!projectView && (
         <div className="category-label-container">
-          <div className="label">games?</div>
+          <div className="label">{project.name}</div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

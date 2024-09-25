@@ -9,7 +9,8 @@ import Portfolio from "@/components/Portfolio";
 import About from "./about/page";
 import ContactForm from "./contact/page";
 import Footer from "@/components/Footer";
-import { smoothScrollTo } from "@/utils";
+import { smoothScrollTo } from "@/utils/smoothScroll";
+import { GetStaticProps } from "next";
 
 const Home = () => {
   const [isRealName, setIsRealName] = useState(false);
