@@ -1,22 +1,19 @@
-// "use client";
-
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import VideoSection from "../components/VideoSection";
 import { smoothScrollTo } from "@/utils/smoothScroll";
 import { getRandomElements } from "@/utils/getRandomElements";
-import { web, games, other, Project } from "../components/Projects";
-interface Section {
-  label: string;
-  src: string;
-}
+import { Project, projects } from "../components/Projects";
+// interface Section {
+//   label: string;
+//   src: string;
+// }
 
 // type PortfolioProps = {
 //   selectedProjects: Project[];
 // };
 
-const allProjects = [...web, ...games, ...other];
-const filteredProjects = allProjects;
+const filteredProjects = projects;
 if (filteredProjects.length < 3) {
   console.error("TODO: handle < 3 valid projects");
 }
@@ -41,9 +38,9 @@ const Portfolio = () => {
   function handleClick(id: number) {
     const project = selectedProjects[id].id;
     console.log("clicked on id", id, "project name", project);
-    if (expandedSection !== project) {
-      router.push(`games/${project}`, { scroll: false });
-    }
+    // if (expandedSection !== project) {
+    //   router.push(`project/${project}`, { scroll: false });
+    // }
   }
 
   const handleClose = useCallback(() => {
@@ -72,7 +69,6 @@ const Portfolio = () => {
   return (
     <div className="portfolio">
       {selectedProjects.map((p, i: number) => {
-        console.log("p is", p, "i is", i);
         return (
           <>
             <VideoSection
@@ -88,8 +84,6 @@ const Portfolio = () => {
               }
               portfolioOnClick={() => handleClick(i)}
             />
-            {/* <h2>{p.name}</h2>
-            <p>{p.description}</p> */}
           </>
         );
       })}

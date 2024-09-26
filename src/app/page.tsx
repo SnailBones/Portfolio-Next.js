@@ -5,7 +5,7 @@ import { useState } from "react";
 import RedirectHandler from "../components/RedirectHandler";
 import "./home.scss";
 import TreeCanvas from "../components/treeViz/treeViz";
-import Portfolio from "@/components/Portfolio";
+import PortfolioContainer from "@/components/PortfolioContainer";
 import About from "./about/page";
 import ContactForm from "./contact/page";
 import Footer from "@/components/Footer";
@@ -60,7 +60,7 @@ const Home = () => {
           </h1>
         </div>
         <div id="portfolio">
-          <Portfolio />
+          <PortfolioContainer />
         </div>
 
         <div>

@@ -18,18 +18,19 @@ const RedirectHandler: React.FC<RedirectHandlerProps> = ({ children }) => {
       const projectId = match[1];
 
       const projectRedirects: { [key: string]: string } = {
-        grid: `/web/grid`,
-        run: `/games/runner`,
-        cactris: `/games/cactris`,
-        trees: `/games/trees`,
-        lamplight: `/games/lamplight`,
-        forest: `/games/forest`,
-        okeeffe: "/web/okeeffe",
-        ocean: "/games/explocean",
-        nature: "other/nature",
+        grid: `/project/grid`,
+        run: `/project/runner`,
+        cactris: `/project/cactris`,
+        trees: `/project/trees`,
+        lamplight: `/project/lamplight`,
+        forest: `/project/forest`,
+        okeeffe: "/project/okeeffe",
+        ocean: "/project/explocean",
+        nature: "/project/nature",
       };
 
-      const redirectPath = projectRedirects[projectId] || `/games/${projectId}`;
+      const redirectPath =
+        projectRedirects[projectId] || `/project/${projectId}`;
       router.replace(redirectPath);
     }
   }, [router]);

@@ -175,18 +175,6 @@ body {
   min-height: 100vh; /* Make sure it fills at least the whole viewport height */
 }
 
-.portfolio {
-  display: flex;
-  flex-direction: row;
-  width: 100vw;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  @media (max-width: 767px) {
-    flex-direction: column;
-  }
-}
-
 .screen-space {
   // give breathing room to elements, make them take up a whole screen size
   display: flex;
