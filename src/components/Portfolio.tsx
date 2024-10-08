@@ -13,71 +13,61 @@ import { Project, projects } from "../components/Projects";
 //   selectedProjects: Project[];
 // };
 
-const filteredProjects = projects;
-if (filteredProjects.length < 3) {
-  console.error("TODO: handle < 3 valid projects");
-}
-
-const Portfolio = () => {
+const Portfolio = ({ projects }: { projects: Project[] }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [_, section, subSection] = pathname.split("/");
-  const expandedSection = section;
-
-  const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
-  useEffect(() => {
-    setSelectedProjects(getRandomElements(filteredProjects, 3));
-  }, []);
+  // const [_, section, subSection] = pathname.split("/");
+  const [expandedSection, setExpandedSection] = useState<string>("");
 
   const expandSection = useCallback((label: string) => {
-    document.body.style.overflow = "hidden";
+    // document.body.style.overflow = "hidden";
     smoothScrollTo("#portfolio");
+    setExpandedSection(label);
+    console.log("expanding");
+  }, []);
+
+  const closeSection = useCallback(() => {
+    document.body.style.overflow = "unset";
+    setExpandedSection("");
   }, []);
 
   function handleClick(id: number) {
-    const project = selectedProjects[id].id;
+    const project = projects[id].id;
     console.log("clicked on id", id, "project name", project);
-    // if (expandedSection !== project) {
-    //   router.push(`project/${project}`, { scroll: false });
-    // }
+    expandSection(project);
   }
-
-  const handleClose = useCallback(() => {
-    document.body.style.overflow = "unset"; // perhaps set this in response to path
-    router.push("/", { scroll: false });
-  }, [router]);
 
   useEffect(() => {
     const [_, section, subSection] = pathname.split("/");
     if (section) {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
-          handleClose();
+          closeSection();
         }
       };
 
       document.addEventListener("keydown", handleKeyDown);
       return () => document.removeEventListener("keydown", handleKeyDown);
     }
-  }, [pathname, handleClose]);
+  }, [pathname, closeSection]);
 
-  if (!selectedProjects) {
+  if (!projects) {
     return <div>No projects were found.</div>;
   }
 
   return (
     <div className="portfolio">
-      {selectedProjects.map((p, i: number) => {
+      {projects.map((p, i: number) => {
         return (
           <>
             <VideoSection
               key={p.id}
               project={p}
-              onClose={handleClose}
+              onClose={closeSection}
               expandedState={
                 expandedSection
-                  ? expandedSection === "games"
+                  ? expandedSection === p.id
                     ? "expanded"
                     : "diminished"
                   : ""

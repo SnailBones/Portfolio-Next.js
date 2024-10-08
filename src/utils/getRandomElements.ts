@@ -2,7 +2,10 @@ export function getRandomElements<T>(arr: T[], numElements: number): T[] {
   const length = arr.length;
 
   if (numElements > length) {
-    throw new Error("numElements cannot be greater than the array length");
+    console.warn(
+      `Cannot get ${numElements} random elements, only ${length} are in the array`
+    );
+    return arr;
   }
 
   const indices = new Set<number>();

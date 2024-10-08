@@ -34,6 +34,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
   const pathname = usePathname();
 
   const expanded = expandedState === "expanded"; // Video takes up fullscreen (or at least > 1/3 screen)
+  const diminished = expandedState === "diminished";
   const currentProject = project;
 
   // useEffect(() => {
@@ -143,6 +144,16 @@ const VideoSection: React.FC<VideoSectionProps> = ({
     onClose();
   };
 
+  const onClickLeft = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onClose();
+  };
+
+  const onClickRight = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onClose();
+  };
+
   useEffect(() => {
     if (expanded) {
       const handleKeyDown = (e: KeyboardEvent) => {
@@ -178,10 +189,10 @@ const VideoSection: React.FC<VideoSectionProps> = ({
           <button className="nav-button quit" onClick={onClickX}>
             <div className="inner-button">{`x`}</div>
           </button>
-          <button className="nav-button prev">
+          <button className="nav-button prev" onClick={onClickLeft}>
             <div className="inner-button">{`<`}</div>
           </button>
-          <button className="nav-button next">
+          <button className="nav-button next" onClick={onClickRight}>
             <div className="inner-button">{`>`}</div>
           </button>
         </>
@@ -214,12 +225,11 @@ const VideoSection: React.FC<VideoSectionProps> = ({
           <div
             className={"text-container " + (projectView ? "visible" : "hidden")}
           >
-            {/* // TODO; rearrange projects? */}
-            <ProjectText markdownPath={`games/${currentProject.id}/page.mdx`} />
+            <ProjectText markdownPath={`${currentProject.id}/page.mdx`} />
           </div>
         )}
       </div>
-      {!projectView && (
+      {!diminished && (
         <div className="category-label-container">
           <div className="label">{project.name}</div>
         </div>
