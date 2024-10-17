@@ -3,13 +3,7 @@ import Image from "next/image";
 import ProjectText from "./ProjectText";
 import "./VideoSection.scss";
 import { useRouter, usePathname } from "next/navigation";
-
-interface Project {
-  src: string;
-  name: string;
-  id: string;
-}
-
+import { Project } from "../components/Projects";
 interface VideoSectionProps {
   project: Project;
   expandedState: string;
@@ -230,9 +224,12 @@ const VideoSection: React.FC<VideoSectionProps> = ({
         )}
       </div>
       {!diminished && (
-        <div className="category-label-container">
-          <div className="label">{project.name}</div>
-        </div>
+        <>
+          <div className="category-label-container">
+            <div className="label">{project.name}</div>
+          </div>
+          <div className="label">{project.description}</div>
+        </>
       )}
     </div>
   );

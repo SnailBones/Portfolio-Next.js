@@ -1,6 +1,6 @@
 @import "../scss/style.scss";
 .video-section {
-  flex: 1; // Allow shrink, with initial basis of 33.33%
+  flex: 1;
   transition: flex 0.5s ease, width 0.5s ease, visibility 0.5s ease;
   position: relative;
   cursor: pointer;

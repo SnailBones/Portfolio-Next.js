@@ -2,16 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import VideoSection from "../components/VideoSection";
 import { smoothScrollTo } from "@/utils/smoothScroll";
-import { getRandomElements } from "@/utils/getRandomElements";
-import { Project, projects } from "../components/Projects";
-// interface Section {
-//   label: string;
-//   src: string;
-// }
-
-// type PortfolioProps = {
-//   selectedProjects: Project[];
-// };
+import { Project } from "../components/Projects";
 
 const Portfolio = ({ projects }: { projects: Project[] }) => {
   const router = useRouter();
@@ -21,7 +12,7 @@ const Portfolio = ({ projects }: { projects: Project[] }) => {
   const [expandedSection, setExpandedSection] = useState<string>("");
 
   const expandSection = useCallback((label: string) => {
-    // document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
     smoothScrollTo("#portfolio");
     setExpandedSection(label);
     console.log("expanding");
@@ -39,8 +30,7 @@ const Portfolio = ({ projects }: { projects: Project[] }) => {
   }
 
   useEffect(() => {
-    const [_, section, subSection] = pathname.split("/");
-    if (section) {
+    if (expandedSection) {
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
           closeSection();
@@ -50,7 +40,7 @@ const Portfolio = ({ projects }: { projects: Project[] }) => {
       document.addEventListener("keydown", handleKeyDown);
       return () => document.removeEventListener("keydown", handleKeyDown);
     }
-  }, [pathname, closeSection]);
+  }, [closeSection, expandedSection]);
 
   if (!projects) {
     return <div>No projects were found.</div>;
@@ -60,21 +50,19 @@ const Portfolio = ({ projects }: { projects: Project[] }) => {
     <div className="portfolio">
       {projects.map((p, i: number) => {
         return (
-          <>
-            <VideoSection
-              key={p.id}
-              project={p}
-              onClose={closeSection}
-              expandedState={
-                expandedSection
-                  ? expandedSection === p.id
-                    ? "expanded"
-                    : "diminished"
-                  : ""
-              }
-              portfolioOnClick={() => handleClick(i)}
-            />
-          </>
+          <VideoSection
+            key={p.id}
+            project={p}
+            onClose={closeSection}
+            expandedState={
+              expandedSection
+                ? expandedSection === p.id
+                  ? "expanded"
+                  : "diminished"
+                : ""
+            }
+            portfolioOnClick={() => handleClick(i)}
+          />
         );
       })}
     </div>
