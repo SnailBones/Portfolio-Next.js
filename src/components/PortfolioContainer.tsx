@@ -7,6 +7,7 @@ import { getRandomElements } from "@/utils/getRandomElements";
 import { Project, projects } from "../components/Projects";
 import { useRouter } from "next/navigation";
 import "./PortfolioContainer.scss";
+import { smoothScrollTo } from "@/utils/smoothScroll";
 
 const TAGS = ["web", "game", "other"];
 
@@ -14,6 +15,7 @@ const PortfolioContainer = () => {
   const router = useRouter();
   const [selectedTags, setSelectedTags] = useState<string[]>(TAGS);
   const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
+  const [previousProjects, setPreviousProjects] = useState<Project[]>([]); // Used to avoid showing last projects on change
 
   //  Initialize selected tags from URL
   useEffect(() => {
@@ -49,27 +51,46 @@ const PortfolioContainer = () => {
   };
 
   // Filter and randomize projects based on selected tags when the component mounts or when tags change
-  const pickRandomProjects = useCallback(() => {
-    // Treat no tags as all tags
-    if (!selectedTags.length || selectedTags.length === TAGS.length) {
-      setSelectedProjects(getRandomElements(projects, 3));
-    } else {
-      const filteredProjects = projects.filter((project) =>
-        selectedTags.some((tag) => project.categories.includes(tag))
-      );
+  const selectNewProjects = useCallback(
+    (oldProjects?: Project[]) => {
+      // Treat no tags as all tags
+      const allTags =
+        !selectedTags.length || selectedTags.length === TAGS.length;
+      const filteredProjects = allTags
+        ? [...projects]
+        : projects.filter((project) =>
+            selectedTags.some((tag) => project.categories.includes(tag))
+          );
+      // Don't include previous projects if there are enough projects
+      console.log("length before splice", filteredProjects.length);
+      if (oldProjects) {
+        let i = 0;
+        while (filteredProjects.length > 3 && i < oldProjects.length) {
+          if (filteredProjects.includes(oldProjects[i])) {
+            filteredProjects.splice(
+              filteredProjects.indexOf(oldProjects[i]),
+              1
+            );
+          }
+          i++;
+        }
+      }
 
-      // todo: don't reuse past projects when possible
+      console.log("length after splice", filteredProjects.length);
       if (filteredProjects.length < 3) {
         console.error("TODO: handle < 3 valid projects");
       }
 
       setSelectedProjects(getRandomElements(filteredProjects, 3));
-    }
-  }, [selectedTags]);
+      smoothScrollTo("#portfolio", 2000);
+      // }
+    },
+    [selectedTags]
+  );
 
   useEffect(() => {
-    pickRandomProjects();
-  }, [pickRandomProjects]);
+    selectNewProjects(previousProjects);
+  }, [selectNewProjects, previousProjects]);
 
   return (
     <div className="portfolio-container">
@@ -80,7 +101,7 @@ const PortfolioContainer = () => {
           <button
             type="button"
             className={`btn btn-primary`}
-            onClick={() => pickRandomProjects()}
+            onClick={() => selectNewProjects(selectedProjects)}
           >
             Show new projects.
           </button>

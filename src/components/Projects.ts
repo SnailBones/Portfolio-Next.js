@@ -1,17 +1,18 @@
 export type Project = {
   id: string;
   name: string;
-  src: string;
+  imgSrc: string;
   description: string;
+  categories: string[];
   year?: number;
   tools?: string[];
 };
 
-export const projects = [
+export const projects: Project[] = [
   {
     id: "globe",
     name: "Mapbox Globe",
-    src: "globe/globe.webm",
+    imgSrc: "globe/globe.webm",
     description: "Adding a globe view to Mapbox GL JS.",
     categories: ["web"],
     tools: ["TypeScript", "WebGL"],
@@ -19,7 +20,7 @@ export const projects = [
   {
     id: "grid",
     name: "Electric Power Fast",
-    src: "epfast/loop.webm",
+    imgSrc: "epfast/loop.webm",
     description: "Visualizing chaos in the grid.",
     categories: ["web"],
     tools: ["JavaScript", "Vue.js", "Mapbox GL JS"],
@@ -27,7 +28,7 @@ export const projects = [
   {
     id: "forage",
     name: "Forage Albuquerque",
-    src: "forage/home.png",
+    imgSrc: "forage/home.png",
     description: "A mobile friendly guide to the edible plants of Albuquerque.",
     categories: ["web"],
     tools: ["React", "Next.js", "TypeScript"],
@@ -36,7 +37,7 @@ export const projects = [
   {
     id: "okeeffe",
     name: "Seeing Beyond",
-    src: "okeeffe/okeeffe.mp4",
+    imgSrc: "okeeffe/okeeffe.mp4",
     description: "An interactive installation at the Georgia Okeeffe Museum.",
     year: 2019,
     categories: ["game, web"],
@@ -45,7 +46,7 @@ export const projects = [
   {
     id: "cactris",
     name: "Cactris",
-    src: "ball/cactris.mp4",
+    imgSrc: "ball/cactris.mp4",
     description: "A match-three puzzle game played with your body.",
     year: 2020,
     categories: ["game, web"],
@@ -54,7 +55,7 @@ export const projects = [
   {
     id: "forest",
     name: "A Tree Falls: the Musical",
-    src: "forest/forest.webm",
+    imgSrc: "forest/forest.webm",
     description: "Interactive ecology put to data-driven music.",
     categories: ["game"],
     tools: ["C++", "Godot"],
@@ -62,7 +63,7 @@ export const projects = [
   {
     id: "worms",
     name: "Worm Royale",
-    src: "worms/worms.webm",
+    imgSrc: "worms/worms.webm",
     description:
       "Compete or cooperate with other players in real space to grow the longest worm.",
     year: 2019,
@@ -72,7 +73,7 @@ export const projects = [
   {
     id: "runner",
     name: "Prism Escape",
-    src: "runner/runner.webm",
+    imgSrc: "runner/runner.webm",
     description:
       "Move your body to race through a virtual landscape in this AR agility game.",
     year: 2019,
@@ -82,7 +83,7 @@ export const projects = [
   {
     id: "trees",
     name: "What Trees Were",
-    src: "trees/sea-serpent.webm",
+    imgSrc: "trees/sea-serpent.webm",
     description: "Customizable 3d tree engine.",
     categories: ["game"],
     tools: ["Java"],
@@ -91,7 +92,7 @@ export const projects = [
   {
     id: "lamplight",
     name: "Lamplight",
-    src: "lamplight/lamplight.webm",
+    imgSrc: "lamplight/lamplight.webm",
     description: "Moth simulator.",
     categories: ["game"],
     tools: ["GameMaker"],
@@ -101,7 +102,7 @@ export const projects = [
   {
     id: "gan",
     name: "Renaissance GAN",
-    src: "gan/bush.webm",
+    imgSrc: "gan/bush.webm",
     description:
       "A Convolutional Generative Adversarial Network for Creating Music and Art.",
     categories: ["other", "machine learning"],
@@ -109,14 +110,14 @@ export const projects = [
   {
     id: "nature",
     name: "Nature Now",
-    src: "museum/models/labside.jpg",
+    imgSrc: "museum/models/labside.jpg",
     description: "Design for a museum exhibit bringing the diorama up-to-date.",
     categories: ["other", "design"],
   },
   {
     id: "plays",
     name: "Plays",
-    src: "painless/set.jpg",
+    imgSrc: "painless/set.jpg",
     description: "",
     categories: ["other"],
   },

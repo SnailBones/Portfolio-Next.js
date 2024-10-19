@@ -53,7 +53,6 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   useEffect(() => {
     const currentVideo = videoRef.current;
-    console.log("currentVideo is", currentVideo);
     if (currentVideo) {
       // currentVideo.load();videoRefs
       currentVideo
@@ -193,21 +192,22 @@ const VideoSection: React.FC<VideoSectionProps> = ({
       )}
       <div className="project-container">
         <div className="media-container">
-          <div key={project.src} className={`media-element current`}>
-            {project.src.endsWith("webm") || project.src.endsWith("mp4") ? (
+          <div key={project.imgSrc} className={`media-element current`}>
+            {project.imgSrc.endsWith("webm") ||
+            project.imgSrc.endsWith("mp4") ? (
               <video
                 preload={"auto"}
-                key={project.src}
+                key={project.imgSrc}
                 loop
                 muted
                 ref={(el) => (videoRef.current = el)}
               >
-                <source src={`/img/${project.src}`} type="video/mp4" />
+                <source src={`/img/${project.imgSrc}`} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             ) : (
               <Image
-                src={`/img/${project.src}`}
+                src={`/img/${project.imgSrc}`}
                 alt={project.name}
                 width={1920}
                 height={1080} // todo: determine best width and height
