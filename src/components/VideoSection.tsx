@@ -225,10 +225,14 @@ const VideoSection: React.FC<VideoSectionProps> = ({
       </div>
       {!diminished && (
         <>
-          <div className="category-label-container">
+          <div className={"title-container" + (expanded ? " expanded" : "")}>
             <div className="label">{project.name}</div>
           </div>
-          <div className="label">{project.description}</div>
+          {expanded && (
+            <div className="description-container">
+              <div className="label">{project.description}</div>
+            </div>
+          )}
         </>
       )}
     </div>

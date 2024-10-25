@@ -104,7 +104,7 @@ export const projects: Project[] = [
     name: "Renaissance GAN",
     imgSrc: "gan/bush.webm",
     description:
-      "A Convolutional Generative Adversarial Network for Creating Music and Art.",
+      "A Convolutional Generative Adversarial Network for creating music and art.",
     categories: ["other", "machine learning"],
   },
   {

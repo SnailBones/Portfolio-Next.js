@@ -58,18 +58,18 @@
   }
 }
 
-.category-label-container {
-  position: absolute;
-  bottom: 38px;
-  width: 100%;
-  text-align: center;
-}
-
 .title-container {
   position: absolute;
-  top: 38px;
   width: 100%;
   text-align: center;
+  // bottom: 38px;
+  bottom: 10%;
+  transition: 0.4s ease;
+  font-size: 55px;
+  .expanded & {
+    // top: 38px;
+    bottom: 80%;
+  }
 }
 
 .label {
@@ -77,10 +77,17 @@
   width: fit-content;
   padding: 4px 22px;
   border-radius: 147px;
-  font-size: 55px;
   z-index: 1;
   background: black;
   opacity: 0.6;
+}
+
+.description-container {
+  position: absolute;
+  bottom: 38px;
+  width: 100%;
+  text-align: center;
+  font-size: 28px;
 }
 
 .description {
