@@ -22,7 +22,7 @@ export const projects: Project[] = [
     name: "Electric Power Fast",
     imgSrc: "epfast/loop.webm",
     description: "Visualizing chaos in the grid.",
-    categories: ["web"],
+    categories: ["web", "design"],
     tools: ["JavaScript", "Vue.js", "Mapbox GL JS"],
   },
   {
@@ -30,7 +30,7 @@ export const projects: Project[] = [
     name: "Forage Albuquerque",
     imgSrc: "forage/home.png",
     description: "A mobile friendly guide to the edible plants of Albuquerque.",
-    categories: ["web"],
+    categories: ["web", "design"],
     tools: ["React", "Next.js", "TypeScript"],
   },
   // games
@@ -40,7 +40,7 @@ export const projects: Project[] = [
     imgSrc: "okeeffe/okeeffe.mp4",
     description: "An interactive installation at the Georgia Okeeffe Museum.",
     year: 2019,
-    categories: ["game, web"],
+    categories: ["game", "web"],
     tools: ["JavaScript", "GLSL"],
   },
   {
@@ -49,7 +49,7 @@ export const projects: Project[] = [
     imgSrc: "ball/cactris.mp4",
     description: "A match-three puzzle game played with your body.",
     year: 2020,
-    categories: ["game, web"],
+    categories: ["game", "web", "design"],
     tools: ["JavaScript", "GLSL"],
   },
   {

@@ -1,21 +1,75 @@
 "use client";
 
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState, useEffect, useCallback } from "react";
-import Portfolio from "./Portfolio";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { getRandomElements } from "@/utils/getRandomElements";
-import { Project, projects } from "../components/Projects";
-import { useRouter } from "next/navigation";
-import "./PortfolioContainer.scss";
 import { smoothScrollTo } from "@/utils/smoothScroll";
+import { Project, projects as allProjects } from "./Projects";
+import Portfolio from "./Portfolio";
+import { useRouter, usePathname } from "next/navigation";
+import "./PortfolioContainer.scss";
 
-const TAGS = ["web", "game", "other"];
+const TAGS = ["web", "game", "design", "other"];
 
 const PortfolioContainer = () => {
-  const router = useRouter();
   const [selectedTags, setSelectedTags] = useState<string[]>(TAGS);
   const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
-  const [previousProjects, setPreviousProjects] = useState<Project[]>([]); // Used to avoid showing last projects on change
+  const previousProjectsRef = useRef<Project[]>([]); // Used to avoid showing last projects on change
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const [expandedSection, setExpandedSection] = useState<string>("");
+  const [_, section, openProject] = pathname.split("/");
+  const descriptionVisible = openProject ? true : false;
+
+  const openDescription = useCallback(
+    (openProject: string) => {
+      console.log("opening description for", openProject);
+      router.push(`/project/${openProject}`, { scroll: false });
+    },
+    [router]
+  );
+
+  const closeDescription = useCallback(() => {
+    console.log("closing description section is", section);
+    if (section) {
+      console.log("router reset");
+      router.push("/", { scroll: false });
+    }
+  }, [router, section]);
+
+  const expandProject = useCallback((label: string) => {
+    document.body.style.overflow = "hidden";
+    smoothScrollTo("#portfolio");
+    setExpandedSection(label);
+    console.log("expanding", label);
+  }, []);
+
+  const closeProject = useCallback(() => {
+    debugger;
+    document.body.style.overflow = "unset";
+    setExpandedSection("");
+    console.log("closing project");
+    closeDescription();
+  }, [closeDescription]);
+
+  const toggleDescription = useCallback(() => {
+    console.log("toggling description for", expandedSection);
+    if (descriptionVisible) {
+      closeDescription();
+    } else {
+      openDescription(expandedSection);
+    }
+  }, [expandedSection, descriptionVisible, closeDescription, openDescription]);
+
+  function clickOnVideo(id: number) {
+    const project = selectedProjects[id].id;
+    if (expandedSection === project) {
+      toggleDescription();
+    } else {
+      expandProject(project);
+    }
+  }
 
   //  Initialize selected tags from URL
   useEffect(() => {
@@ -42,6 +96,38 @@ const PortfolioContainer = () => {
     });
   }, [selectedTags, router]);
 
+  const selectNewProjects = useCallback(() => {
+    closeProject();
+    // Treat no tags as all tags
+    const allTags = !selectedTags.length || selectedTags.length === TAGS.length;
+    const filteredProjects = allTags
+      ? [...allProjects]
+      : allProjects.filter((project) =>
+          selectedTags.some((tag) => project.categories.includes(tag))
+        );
+    // Exclude old projects if there are enough new ones
+    const oldProjects = previousProjectsRef.current;
+    for (const oldProject of oldProjects) {
+      const index = filteredProjects.indexOf(oldProject);
+      if (index > -1 && filteredProjects.length > 3) {
+        filteredProjects.splice(index, 1);
+      }
+    }
+
+    // if (filteredProjects.length < 3) {
+    //   console.error("TODO: handle < 3 valid projects");
+    // }
+    const newProjects = getRandomElements(filteredProjects, 3);
+    setSelectedProjects(newProjects);
+    previousProjectsRef.current = newProjects; // Used to avoid showing last projects on change (see newProjects);
+    smoothScrollTo("#portfolio", 700);
+  }, [closeProject, selectedTags]);
+
+  // Run on initial load
+  useEffect(() => {
+    selectNewProjects();
+  }, [selectNewProjects]);
+
   const toggleTag = (tag: string) => {
     setSelectedTags((prevTags) =>
       prevTags.includes(tag)
@@ -50,80 +136,49 @@ const PortfolioContainer = () => {
     );
   };
 
-  // Filter and randomize projects based on selected tags when the component mounts or when tags change
-  const selectNewProjects = useCallback(
-    (oldProjects?: Project[]) => {
-      // Treat no tags as all tags
-      const allTags =
-        !selectedTags.length || selectedTags.length === TAGS.length;
-      const filteredProjects = allTags
-        ? [...projects]
-        : projects.filter((project) =>
-            selectedTags.some((tag) => project.categories.includes(tag))
-          );
-      // Don't include previous projects if there are enough projects
-      console.log("length before splice", filteredProjects.length);
-      if (oldProjects) {
-        let i = 0;
-        while (filteredProjects.length > 3 && i < oldProjects.length) {
-          if (filteredProjects.includes(oldProjects[i])) {
-            filteredProjects.splice(
-              filteredProjects.indexOf(oldProjects[i]),
-              1
-            );
-          }
-          i++;
-        }
-      }
-
-      console.log("length after splice", filteredProjects.length);
-      if (filteredProjects.length < 3) {
-        console.error("TODO: handle < 3 valid projects");
-      }
-
-      setSelectedProjects(getRandomElements(filteredProjects, 3));
-      smoothScrollTo("#portfolio", 2000);
-      // }
-    },
-    [selectedTags]
-  );
-
-  useEffect(() => {
-    selectNewProjects(previousProjects);
-  }, [selectNewProjects, previousProjects]);
-
   return (
     <div className="portfolio-container">
-      <div className="portfolio-header">
-        <h2>Here's three things I made, chosen at random.</h2>
-        <h3>
-          Tweak the buttons to show and hide different projects, or
-          <button
-            type="button"
-            className={`btn btn-primary`}
-            onClick={() => selectNewProjects(selectedProjects)}
-          >
-            Show new projects.
-          </button>
-        </h3>
-      </div>
-      <div className="button-container">
-        <div className="tag-buttons">
-          {TAGS.map((tag) => (
+      <Portfolio
+        projects={selectedProjects}
+        expandedSection={expandedSection}
+        descriptionVisible={descriptionVisible}
+        closeProject={closeProject}
+        handleClick={clickOnVideo}
+      />
+      <div
+        className={`controls-container ${descriptionVisible ? "hidden" : ""}`}
+      >
+        <div className="portfolio-instructions">
+          <h2>Here's three random things I made.</h2>
+          <h3>
+            Click to learn more, tweak the buttons to view different projects,
+            or
             <button
-              key={tag}
               type="button"
-              className={`btn ${
-                selectedTags.includes(tag) ? "btn-primary" : "btn-secondary"
-              }`}
-              onClick={() => toggleTag(tag)}
+              className={"btn"}
+              onClick={() => selectNewProjects()}
             >
-              {tag}
+              show new projects.
             </button>
-          ))}
+          </h3>
+        </div>
+        <div className="button-container">
+          <div className="tag-buttons">
+            {TAGS.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                className={`btn ${
+                  selectedTags.includes(tag) ? "btn-on" : "btn-off"
+                }`}
+                onClick={() => toggleTag(tag)}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-      <Portfolio projects={selectedProjects} />
     </div>
   );
 };

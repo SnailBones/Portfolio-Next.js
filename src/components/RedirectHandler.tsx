@@ -12,6 +12,7 @@ const RedirectHandler: React.FC<RedirectHandlerProps> = ({ children }) => {
 
   useEffect(() => {
     const hash = window.location.hash;
+
     const match = hash.match(/^#\/project\/(.+)/);
 
     if (match) {
@@ -32,6 +33,17 @@ const RedirectHandler: React.FC<RedirectHandlerProps> = ({ children }) => {
       const redirectPath =
         projectRedirects[projectId] || `/project/${projectId}`;
       router.replace(redirectPath);
+    }
+
+    const path = window.location.pathname;
+    const pathMatch = path.match(/^\/(games|web|other)\/(.+)/);
+
+    if (pathMatch) {
+      const projectId = pathMatch[2];
+      console.log("pathMatch is", pathMatch);
+      const redirectPath = `/project/${projectId}`;
+      console.log("redirecting to", redirectPath);
+      router.replace("");
     }
   }, [router]);
 

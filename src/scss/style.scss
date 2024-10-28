@@ -40,18 +40,25 @@ $font-family: Montserrat, Arial, sans-serif;
 
 $color-light: #fbfbfb;
 $color-light-muted: #e6e6ef;
-$color-blue: #9454ff;
+$color-grey: #64677e;
+$color-deep: #3b3153;
 $color-dark: #181a20;
-// $color-orange: #ee6605;
+// $color-blue: #9454ff;
+$color-blue: #633bc0;
 $color-orange: #f97400;
 $color-gold: #d48c0e;
 $color-green: #54ff06;
 
 @import "~bootstrap/scss/bootstrap.scss";
 
-.dropdown-menu {
+body {
   background-color: $color-dark;
-  z-index: 1050;
+  color: $color-light;
+
+  font-size: $font-size;
+  font-family: $font-family;
+  overflow: visible;
+  overflow-x: hidden;
 }
 
 p {
@@ -84,118 +91,37 @@ p {
   }
 }
 
-.mail {
-  height: 44px;
-  margin: 30px 0;
-
-  a {
-    position: relative;
-
-    &:hover {
-      color: $color-light;
-      text-decoration: none;
-    }
-
-    &:before {
-      content: "";
-      position: absolute;
-      transition: transform 0.5s ease;
-      right: 0;
-      top: 0;
-      width: 100%;
-      height: 2px;
-      background: $color-green;
-      transform: scaleX(0);
-      transform-origin: top right;
-    }
-
-    &:hover:before {
-      transform: scaleX(1);
-    }
-
-    &:after {
-      content: "";
-      position: absolute;
-      transition: transform 0.5s ease;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 2px;
-      background: $color-green;
-      transform: scaleX(0);
-      transform-origin: top left;
-    }
-
-    &:hover:after {
-      transform: scaleX(1);
-    }
-  }
-}
-
-body {
-  background-color: $color-dark;
+.btn {
+  font-size: 32px;
+  font-weight: 900;
+  margin: 4px;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: $color-deep;
   color: $color-light;
+  transition: 0.2s;
 
-  font-size: $font-size;
-  font-family: $font-family;
-  overflow: visible;
-  overflow-x: hidden;
-
-  #app {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+  &:hover {
+    background-color: $color-blue;
+    transform: scale(1.05);
   }
 
-  .project {
-    padding: 94px;
-  }
-
-  .imageContainer {
-    box-shadow: 0 0 16px 4px black;
-    background-color: black;
-    margin: 5% img {
-      max-width: 100%;
-      align-self: center;
+  &.btn-on {
+    background-color: $color-blue;
+    border-color: $color-blue;
+    color: $color-light;
+    &:hover {
+      background-color: $color-orange;
     }
   }
 
-  .carousel {
-    margin: 32px 0 32px;
-  }
-
-  .shade {
-    display: inline-block;
-    position: relative;
-
-    &:after {
-      content: "";
-      box-shadow: 0 0 16px 4px black;
-      background: black;
-
-      width: 100%;
-      height: 100%;
-
-      right: 0;
-      top: 0;
-
-      position: absolute;
-      z-index: -1;
+  &.btn-off {
+    background-color: $color-grey;
+    border-color: $color-grey;
+    color: $color-light;
+    &:hover {
+      background-color: $color-green;
     }
-  }
-
-  // h1 {
-  //   font-size: 4rem;
-  //   font-weight: bold;
-  // }
-
-  ::-webkit-scrollbar {
-    width: 0px;
-
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #ff0000;
   }
 }

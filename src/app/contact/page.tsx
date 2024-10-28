@@ -38,23 +38,17 @@ export default function ContactForm() {
           <form onSubmit={handleSubmit} id="contact">
             <div className="form-row">
               <div className="message-column">
-                <textarea name="message" placeholder="Your Message" required />
+                <textarea
+                  name="message"
+                  placeholder="Send me a message?"
+                  required
+                />
               </div>
               <div className="info-column">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  required
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  required
-                />
+                <input type="text" name="name" placeholder="Name" required />
+                <input type="email" name="email" placeholder="Email" required />
 
-                <button type="submit" disabled={loading}>
+                <button className="btn" disabled={loading}>
                   {loading
                     ? "Sending..."
                     : error

@@ -1,162 +1,38 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import ProjectText from "./ProjectText";
-import "./VideoSection.scss";
-import { useRouter, usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { Project } from "../components/Projects";
+import "./VideoSection.scss";
+
+type ExpandedState = "collapsed" | "" | "expanded" | "description";
+
 interface VideoSectionProps {
   project: Project;
-  expandedState: string;
-  portfolioOnClick: () => void;
+  state: ExpandedState;
+  onClick: () => void;
   onClose: () => void;
+  animationDelay: number;
 }
-
-// TODO: either enable switching path or hide arrows on project view
 
 const VideoSection: React.FC<VideoSectionProps> = ({
   project,
-  expandedState,
-  portfolioOnClick,
+  state,
+  onClick,
   onClose,
+  animationDelay,
 }) => {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-  const [projectView, setProjectView] = useState(false); // boolean
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const autoScrollTimer = useRef<number | NodeJS.Timeout | null>(null);
 
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const expanded = expandedState === "expanded"; // Video takes up fullscreen (or at least > 1/3 screen)
-  const diminished = expandedState === "diminished";
-  const currentProject = project;
-
-  // useEffect(() => {
-  //   const [_, section, project] = pathname.split("/");
-  //   if (project) {
-  //     // console.log("project is", project);
-  //     const projectIds = projects.map((p) => p.id);
-  //     const projectIndex = projectIds.indexOf(project);
-  //     if (projectIndex !== -1) {
-  //       setCurrentProjectIndex(projectIndex); // "Scroll" to project
-  //       setProjectView(true); // Open description
-  //     }
-  //   } else {
-  //     setProjectView(false); // Close description if path has no project
-  //   }
-  // }, [pathname, projects]);
-
-  // useEffect(() => {
-  //   // Adjust the array size if the number of projects changes
-  //   videoRefs.current = new Array(projects.length).fill(null);
-  // }, [projects.length]);
-
-  useEffect(() => {
-    const currentVideo = videoRef.current;
-    if (currentVideo) {
-      // currentVideo.load();videoRefs
-      currentVideo
-        .play()
-        .catch((error) => console.error("Error playing video:", error));
-    }
-  }, [currentProjectIndex, project]);
-
-  // const changeProjectIndex = useCallback(
-  //   (change: number) => {
-  //     setCurrentProjectIndex(
-  //       (current) => (current + change + projects.length) % projects.length
-  //     );
-  //   },
-  //   [projects.length]
-  // );
-
-  // const resetTimer = useCallback(() => {
-  //   if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
-  //   autoScrollTimer.current = setInterval(
-  //     () => changeProjectIndex(1),
-  //     2000
-  //   ) as NodeJS.Timeout;
-  // }, [changeProjectIndex]);
-
-  const toggleDescription = useCallback(
-    (visible: boolean) => {
-      // console.log("toggling description");
-      // console.log("pathname is", pathname);
-      // setProjectView(visible); // todo: move to useeffect
-      const [_, section, project] = pathname.split("/");
-      // if (visible) {
-      //   router.push(`${section}/${currentProject.id}`, { scroll: false });
-      //   console.log("opening, pushing", `${currentProject.id}`);
-      //   // router.push(`${currentProject.id}`, { scroll: false });
-      // } else {
-      //   router.push(`/${section}`, { scroll: false });
-      //   // router.push(`..`, { scroll: false });
-      //   console.log("closing, pushing pushing /$section");
-      // }
-    },
-    [currentProject.id, pathname, router]
-  );
-
-  // Start the auto-scroll timer when expanded or when closing description
-  useEffect(() => {
-    // Hide description when closing
-    if (expandedState === "") {
-      toggleDescription(false);
-    } // else if (expanded && !projectView) {
-    // resetTimer();
-    // } else {
-    //   autoScrollTimer.current = null;
-    // }
-    // Pause video if mouse is not over the video section
-    if (!expanded) {
-      videoRef.current?.pause();
-    }
-
-    // return () => {
-    //   // Clear the timer when the component unmounts or before re-creating it
-    //   if (autoScrollTimer.current) clearInterval(autoScrollTimer.current);
-    // };
-  }, [
-    expanded,
-    expandedState,
-    projectView,
-    currentProjectIndex,
-    // resetTimer,
-    toggleDescription,
-  ]);
-
-  function onClick() {
-    if (expandedState) {
-      toggleDescription(!projectView);
-    }
-    portfolioOnClick();
-  }
+  const expanded = state === "expanded" || state === "description"; // Video takes up fullscreen (or at least > 1/3 screen)
+  const collapsed = state === "collapsed";
 
   const onClickX = (e: React.MouseEvent) => {
     e.stopPropagation();
     onClose();
   };
-
-  const onClickLeft = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onClose();
-  };
-
-  const onClickRight = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onClose();
-  };
-
-  useEffect(() => {
-    if (expanded) {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        console.log("key", e.key);
-      };
-
-      document.addEventListener("keydown", handleKeyDown);
-      return () => document.removeEventListener("keydown", handleKeyDown);
-    }
-  }, [expanded]);
 
   const handleMouseOver = () => {
     videoRef.current?.play();
@@ -164,15 +40,31 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   const handleMouseOut = () => {
     // keep playing if in fullscreen "reel" mode
-    if (!projectView && !expanded) {
+    if (!expanded) {
       videoRef.current?.pause();
     }
   };
-  // todo: pause video on unload
 
+  useEffect(() => {
+    // Pause video when closing
+    if (!expanded) {
+      videoRef.current?.pause();
+    }
+  }, [expanded]);
+
+  const variants = {
+    hidden: { opacity: 0, scale: 0.8, y: -100 },
+    visible: { opacity: 1, scale: 1, y: 0 },
+  };
   return (
-    <div
-      className={`video-section ${expandedState}`}
+    <motion.div
+      key={project.id}
+      variants={variants} // Apply variants to each child
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+      transition={{ delay: animationDelay, duration: 0.5, ease: "easeInOut" }}
+      className={`video-section ${collapsed ? "collapsed" : ""}`}
       onClick={onClick}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
@@ -182,12 +74,12 @@ const VideoSection: React.FC<VideoSectionProps> = ({
           <button className="nav-button quit" onClick={onClickX}>
             <div className="inner-button">{`x`}</div>
           </button>
-          <button className="nav-button prev" onClick={onClickLeft}>
+          {/* <button className="nav-button prev" onClick={onClickLeft}>
             <div className="inner-button">{`<`}</div>
           </button>
           <button className="nav-button next" onClick={onClickRight}>
             <div className="inner-button">{`>`}</div>
-          </button>
+          </button> */}
         </>
       )}
       <div className="project-container">
@@ -196,7 +88,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
             {project.imgSrc.endsWith("webm") ||
             project.imgSrc.endsWith("mp4") ? (
               <video
-                preload={"auto"}
+                preload="auto"
                 key={project.imgSrc}
                 loop
                 muted
@@ -215,27 +107,20 @@ const VideoSection: React.FC<VideoSectionProps> = ({
             )}
           </div>
         </div>
-        {expanded && (
-          <div
-            className={"text-container " + (projectView ? "visible" : "hidden")}
-          >
-            <ProjectText markdownPath={`${currentProject.id}/page.mdx`} />
-          </div>
-        )}
       </div>
-      {!diminished && (
+      {!collapsed && (
         <>
-          <div className={"title-container" + (expanded ? " expanded" : "")}>
+          <div className={"title-container" + (expanded ? " top" : "")}>
             <div className="label">{project.name}</div>
           </div>
-          {expanded && (
+          {state === "expanded" && (
             <div className="description-container">
               <div className="label">{project.description}</div>
             </div>
           )}
         </>
       )}
-    </div>
+    </motion.div>
   );
 };
 

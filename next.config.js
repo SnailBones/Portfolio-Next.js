@@ -4,20 +4,18 @@ const withMDX = require("@next/mdx")();
 const nextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   async rewrites() {
-    return [
-      {
-        source: "/(games|web|other)",
-        destination: "/",
-      },
-      {
-        source: "/(games|web|other)/:project",
-        destination: "/",
-      },
-      // {
-      //   source: "/:fallback",
-      //   destination: "/",
-      // },
-    ];
+    return {
+      beforeFiles: [
+        {
+          source: "/project",
+          destination: "/",
+        },
+        {
+          source: "/project/:project",
+          destination: "/",
+        },
+      ],
+    };
   },
 };
 
