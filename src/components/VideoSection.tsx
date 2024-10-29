@@ -35,7 +35,11 @@ const VideoSection: React.FC<VideoSectionProps> = ({
   };
 
   const handleMouseOver = () => {
-    videoRef.current?.play();
+    try {
+      videoRef.current?.play();
+    } catch (e) {
+      console.error("Failed to play video.", videoRef.current, e);
+    }
   };
 
   const handleMouseOut = () => {

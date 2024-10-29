@@ -40,7 +40,7 @@ export const projects: Project[] = [
     imgSrc: "okeeffe/okeeffe.mp4",
     description: "An interactive installation at the Georgia Okeeffe Museum.",
     year: 2019,
-    categories: ["game", "web"],
+    categories: ["game", "design"],
     tools: ["JavaScript", "GLSL"],
   },
   {
@@ -105,7 +105,7 @@ export const projects: Project[] = [
     imgSrc: "gan/bush.webm",
     description:
       "A Convolutional Generative Adversarial Network for creating music and art.",
-    categories: ["other", "machine learning"],
+    categories: ["other", "ml"],
   },
   {
     id: "nature",

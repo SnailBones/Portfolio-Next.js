@@ -36,8 +36,6 @@ const Portfolio = ({
     return <div>No projects were found.</div>;
   }
 
-  console.log("PORTFOLIO: expandedSection is", expandedSection);
-
   return (
     <AnimatePresence initial={false}>
       <motion.div className="portfolio">

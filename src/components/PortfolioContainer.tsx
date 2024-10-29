@@ -24,16 +24,13 @@ const PortfolioContainer = () => {
 
   const openDescription = useCallback(
     (openProject: string) => {
-      console.log("opening description for", openProject);
       router.push(`/project/${openProject}`, { scroll: false });
     },
     [router]
   );
 
   const closeDescription = useCallback(() => {
-    console.log("closing description section is", section);
     if (section) {
-      console.log("router reset");
       router.push("/", { scroll: false });
     }
   }, [router, section]);
@@ -42,19 +39,15 @@ const PortfolioContainer = () => {
     document.body.style.overflow = "hidden";
     smoothScrollTo("#portfolio");
     setExpandedSection(label);
-    console.log("expanding", label);
   }, []);
 
   const closeProject = useCallback(() => {
-    debugger;
     document.body.style.overflow = "unset";
     setExpandedSection("");
-    console.log("closing project");
     closeDescription();
   }, [closeDescription]);
 
   const toggleDescription = useCallback(() => {
-    console.log("toggling description for", expandedSection);
     if (descriptionVisible) {
       closeDescription();
     } else {
@@ -120,13 +113,12 @@ const PortfolioContainer = () => {
     const newProjects = getRandomElements(filteredProjects, 3);
     setSelectedProjects(newProjects);
     previousProjectsRef.current = newProjects; // Used to avoid showing last projects on change (see newProjects);
-    smoothScrollTo("#portfolio", 700);
-  }, [closeProject, selectedTags]);
+  }, [selectedTags, closeProject]);
 
-  // Run on initial load
   useEffect(() => {
     selectNewProjects();
-  }, [selectNewProjects]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTags]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prevTags) =>
@@ -156,7 +148,10 @@ const PortfolioContainer = () => {
             <button
               type="button"
               className={"btn"}
-              onClick={() => selectNewProjects()}
+              onClick={() => {
+                selectNewProjects();
+                smoothScrollTo("#portfolio", 500);
+              }}
             >
               show new projects.
             </button>
@@ -171,7 +166,10 @@ const PortfolioContainer = () => {
                 className={`btn ${
                   selectedTags.includes(tag) ? "btn-on" : "btn-off"
                 }`}
-                onClick={() => toggleTag(tag)}
+                onClick={() => {
+                  toggleTag(tag);
+                  smoothScrollTo("#portfolio", 500);
+                }}
               >
                 {tag}
               </button>
