@@ -44,8 +44,12 @@ const VideoSection: React.FC<VideoSectionProps> = ({
 
   const handleMouseOut = () => {
     // keep playing if in fullscreen "reel" mode
-    if (!expanded) {
-      videoRef.current?.pause();
+    if (!expanded && videoRef.current) {
+      try {
+        videoRef.current.pause();
+      } catch (e) {
+        console.error("Failed to pause video.", videoRef.current, e);
+      }
     }
   };
 

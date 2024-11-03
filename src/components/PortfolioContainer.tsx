@@ -6,10 +6,15 @@ import { getRandomElements } from "@/utils/getRandomElements";
 import { smoothScrollTo } from "@/utils/smoothScroll";
 import { Project, projects as allProjects } from "./Projects";
 import Portfolio from "./Portfolio";
+import PortfolioButton from "./PortfolioButton";
 import { useRouter, usePathname } from "next/navigation";
 import "./PortfolioContainer.scss";
 
 const TAGS = ["web", "game", "design", "other"];
+const BUTTON_TAGS = {
+  code: ["web", "game", "ml"],
+  design: ["web", "game", "other"],
+};
 
 const PortfolioContainer = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>(TAGS);
@@ -126,6 +131,7 @@ const PortfolioContainer = () => {
         ? prevTags.filter((t) => t !== tag)
         : [...prevTags, tag]
     );
+    smoothScrollTo("#portfolio", 500);
   };
 
   return (
@@ -159,21 +165,33 @@ const PortfolioContainer = () => {
         </div>
         <div className="button-container">
           <div className="tag-buttons">
-            {TAGS.map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                className={`btn ${
-                  selectedTags.includes(tag) ? "btn-on" : "btn-off"
-                }`}
-                onClick={() => {
-                  toggleTag(tag);
-                  smoothScrollTo("#portfolio", 500);
-                }}
-              >
-                {tag}
-              </button>
-            ))}
+            <button className="btn">
+              <div className="nested-btn-title">code</div>
+              {BUTTON_TAGS.code.map((tag) => (
+                <PortfolioButton
+                  key={tag}
+                  tag={tag}
+                  isSelected={selectedTags.includes(tag)}
+                  onClick={toggleTag}
+                />
+              ))}
+            </button>
+            <button className="btn">
+              <div className="nested-btn-title">design</div>
+              {BUTTON_TAGS.design.map((tag) => (
+                <PortfolioButton
+                  key={tag}
+                  tag={tag}
+                  isSelected={selectedTags.includes(tag)}
+                  onClick={toggleTag}
+                />
+              ))}
+            </button>
+            <PortfolioButton
+              tag={"other"}
+              isSelected={selectedTags.includes("other")}
+              onClick={toggleTag}
+            />
           </div>
         </div>
       </div>
