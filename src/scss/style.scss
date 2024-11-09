@@ -40,11 +40,10 @@ $font-family: Montserrat, Arial, sans-serif;
 
 $color-light: #fbfbfb;
 $color-light-muted: #e6e6ef;
-$color-grey: #64677e;
-$color-deep: #3b3153;
+$color-grey: #414145;
 $color-dark: #181a20;
-// $color-blue: #9454ff;
 $color-blue: #633bc0;
+$color-deep: #3b3153;
 $color-orange: #f97400;
 $color-gold: #d48c0e;
 $color-green: #54ff06;
@@ -92,36 +91,109 @@ p {
 }
 
 .btn {
+  position: relative;
+  overflow: hidden;
   font-size: 32px;
   font-weight: 900;
   margin: 4px;
   border: none;
   border-radius: 8px;
   padding: 10px;
-  background-color: $color-deep;
   color: $color-light;
   transition: 0.2s;
-
   &:hover {
-    background-color: $color-blue;
     transform: scale(1.05);
   }
+}
 
-  &.btn-on {
+.btn-normal {
+  background-color: $color-deep;
+  &:hover {
     background-color: $color-blue;
-    border-color: $color-blue;
-    color: $color-light;
-    &:hover {
-      background-color: $color-orange;
+  }
+}
+
+.btn-grp {
+  display: inline-block;
+  overflow: hidden;
+  font-size: 32px;
+  font-weight: 900;
+  margin: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+
+  background-color: none;
+  border: solid 3px $color-grey;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: none;
+  border-left-style: solid;
+  border-radius: 80px 80px 0 0;
+  &:hover {
+    &:has(.btn:hover) {
+      transform: scale(1);
     }
+    transform: scale(1.05);
+  }
+  transition: 0.2s;
+}
+
+.btn-on,
+.btn-off {
+  z-index: 3;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $color-grey;
+    z-index: -2;
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background-color: $color-blue;
+    transition: height 0.3s ease-in-out;
+    z-index: -1;
+  }
+}
+
+.btn-on {
+  &::before {
+    height: 100%;
+  }
+  &:hover::before {
+    height: 0%;
+  }
+}
+
+.btn-off {
+  &::before {
+    height: 0%;
   }
 
-  &.btn-off {
-    background-color: $color-grey;
-    border-color: $color-grey;
-    color: $color-light;
-    &:hover {
-      background-color: $color-green;
-    }
+  &:hover::before {
+    height: 100%;
+  }
+}
+
+.btn-grp:hover:not(:has(.btn:hover)) .btn-on {
+  &::before {
+    height: 0%;
+  }
+}
+
+.btn-grp:hover:not(:has(.btn:hover)) {
+  & .btn-on::before {
+    height: 0%;
+  }
+  &.all-off .btn-off::before {
+    height: 100%;
   }
 }

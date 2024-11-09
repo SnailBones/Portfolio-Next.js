@@ -48,7 +48,7 @@ export default function ContactForm() {
                 <input type="text" name="name" placeholder="Name" required />
                 <input type="email" name="email" placeholder="Email" required />
 
-                <button className="btn" disabled={loading}>
+                <button className="btn btn-normal" disabled={loading}>
                   {loading
                     ? "Sending..."
                     : error

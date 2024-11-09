@@ -11,9 +11,24 @@ import { useRouter, usePathname } from "next/navigation";
 import "./PortfolioContainer.scss";
 
 const TAGS = ["web", "game", "design", "other"];
-const BUTTON_TAGS = {
-  code: ["web", "game", "ml"],
-  design: ["web", "game", "other"],
+// const BUTTON_TAGS = {
+//   code: ["web", "game", "ml"],
+//   design: ["web", "game", "other"],
+// };
+
+// const BUTTON_LAYOUT = {
+//   "code": {"web": "web", "game": "game", "ml":"ml"},
+//   "design": {"web":"web-", "game", "other"],
+// };
+
+const CODE_BUTTS = ["web", "game", "ml"];
+
+const DESIGN_BUTTS = ["web-design", "game-design", "other-design"];
+
+const BUTTON_LAYOUT = {
+  code: CODE_BUTTS,
+  design: DESIGN_BUTTS,
+  other: "other",
 };
 
 const PortfolioContainer = () => {
@@ -69,12 +84,14 @@ const PortfolioContainer = () => {
     }
   }
 
+  const URL_BREAK = "--";
+
   //  Initialize selected tags from URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tagsFromUrl = params.get("tags");
     if (tagsFromUrl) {
-      const tagsArray = tagsFromUrl.split("-");
+      const tagsArray = tagsFromUrl.split(URL_BREAK);
       setSelectedTags(tagsArray);
     }
   }, []);
@@ -86,7 +103,7 @@ const PortfolioContainer = () => {
     if (selectedTags.length === 0 || selectedTags.length === TAGS.length) {
       params.delete("tags");
     } else {
-      params.set("tags", selectedTags.join("-"));
+      params.set("tags", selectedTags.join(URL_BREAK));
     }
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     router.replace(newUrl, {
@@ -134,6 +151,21 @@ const PortfolioContainer = () => {
     smoothScrollTo("#portfolio", 500);
   };
 
+  const toggleGroup = (tags: string[]) => {
+    const disable = tags.reduce(
+      (acc, tag) => acc || selectedTags.includes(tag),
+      false
+    );
+
+    console.log("toggling group!", disable ? "disable" : "enable");
+    setSelectedTags((prevTags) =>
+      disable
+        ? prevTags.filter((t) => !tags.includes(t))
+        : [...prevTags, ...tags]
+    );
+    smoothScrollTo("#portfolio", 500);
+  };
+
   return (
     <div className="portfolio-container">
       <Portfolio
@@ -165,9 +197,17 @@ const PortfolioContainer = () => {
         </div>
         <div className="button-container">
           <div className="tag-buttons">
-            <button className="btn">
+            {/* todo: no nested buttons */}
+            <div
+              className={`btn-grp ${
+                CODE_BUTTS.some((tag) => selectedTags.includes(tag))
+                  ? ""
+                  : "all-off"
+              }`}
+              onClick={() => toggleGroup(CODE_BUTTS)}
+            >
               <div className="nested-btn-title">code</div>
-              {BUTTON_TAGS.code.map((tag) => (
+              {BUTTON_LAYOUT.code.map((tag) => (
                 <PortfolioButton
                   key={tag}
                   tag={tag}
@@ -175,10 +215,17 @@ const PortfolioContainer = () => {
                   onClick={toggleTag}
                 />
               ))}
-            </button>
-            <button className="btn">
+            </div>
+            <div
+              className={`btn-grp ${
+                DESIGN_BUTTS.some((tag) => selectedTags.includes(tag))
+                  ? ""
+                  : "all-off"
+              }`}
+              onClick={() => toggleGroup(DESIGN_BUTTS)}
+            >
               <div className="nested-btn-title">design</div>
-              {BUTTON_TAGS.design.map((tag) => (
+              {BUTTON_LAYOUT.design.map((tag) => (
                 <PortfolioButton
                   key={tag}
                   tag={tag}
@@ -186,7 +233,7 @@ const PortfolioContainer = () => {
                   onClick={toggleTag}
                 />
               ))}
-            </button>
+            </div>
             <PortfolioButton
               tag={"other"}
               isSelected={selectedTags.includes("other")}
