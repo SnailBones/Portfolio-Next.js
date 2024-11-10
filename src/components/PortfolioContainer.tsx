@@ -9,20 +9,9 @@ import Portfolio from "./Portfolio";
 import PortfolioButton from "./PortfolioButton";
 import { useRouter, usePathname } from "next/navigation";
 import "./PortfolioContainer.scss";
-
-const TAGS = ["web", "game", "design", "other"];
-// const BUTTON_TAGS = {
-//   code: ["web", "game", "ml"],
-//   design: ["web", "game", "other"],
-// };
-
-// const BUTTON_LAYOUT = {
-//   "code": {"web": "web", "game": "game", "ml":"ml"},
-//   "design": {"web":"web-", "game", "other"],
-// };
+import { select } from "framer-motion/client";
 
 const CODE_BUTTS = ["web", "game", "ml"];
-
 const DESIGN_BUTTS = ["web-design", "game-design", "other-design"];
 
 const BUTTON_LAYOUT = {
@@ -31,16 +20,26 @@ const BUTTON_LAYOUT = {
   other: "other",
 };
 
+const TAG_NAMES = {
+  "web-design": "web",
+  "game-design": "game",
+  "other-design": "other",
+};
+
+const ALL_TAGS = [...CODE_BUTTS, ...DESIGN_BUTTS, "other"];
+
+const URL_BREAK = "."; // Non-digit unreserved characters are "-._~"
+
 const PortfolioContainer = () => {
-  const [selectedTags, setSelectedTags] = useState<string[]>(TAGS);
+  const [selectedTags, setSelectedTags] = useState<string[]>(ALL_TAGS);
   const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
   const previousProjectsRef = useRef<Project[]>([]); // Used to avoid showing last projects on change
 
   const router = useRouter();
   const pathname = usePathname();
+  const [controlsVisible, setControlsVisible] = useState<boolean>(true);
   const [expandedSection, setExpandedSection] = useState<string>("");
   const [_, section, openProject] = pathname.split("/");
-  const descriptionVisible = openProject ? true : false;
 
   const openDescription = useCallback(
     (openProject: string) => {
@@ -49,11 +48,22 @@ const PortfolioContainer = () => {
     [router]
   );
 
+  const getParams = useCallback(() => {
+    const params = new URLSearchParams(window.location.search);
+    // If all or none of the tags are selected, remove the 'tags' parameter
+    if (selectedTags.length === 0 || selectedTags.length === ALL_TAGS.length) {
+      params.delete("tags");
+    } else {
+      params.set("tags", selectedTags.join(URL_BREAK));
+    }
+    return params.toString();
+  }, [selectedTags]);
+
   const closeDescription = useCallback(() => {
     if (section) {
-      router.push("/", { scroll: false });
+      router.push(`/?${getParams()}`, { scroll: false });
     }
-  }, [router, section]);
+  }, [router, section, getParams]);
 
   const expandProject = useCallback((label: string) => {
     document.body.style.overflow = "hidden";
@@ -68,12 +78,12 @@ const PortfolioContainer = () => {
   }, [closeDescription]);
 
   const toggleDescription = useCallback(() => {
-    if (descriptionVisible) {
+    if (!!openProject) {
       closeDescription();
     } else {
       openDescription(expandedSection);
     }
-  }, [expandedSection, descriptionVisible, closeDescription, openDescription]);
+  }, [expandedSection, openProject, closeDescription, openDescription]);
 
   function clickOnVideo(id: number) {
     const project = selectedProjects[id].id;
@@ -84,7 +94,10 @@ const PortfolioContainer = () => {
     }
   }
 
-  const URL_BREAK = "--";
+  const toggleControls = () => {
+    setControlsVisible(!controlsVisible);
+    smoothScrollTo("#portfolio", 500);
+  };
 
   //  Initialize selected tags from URL
   useEffect(() => {
@@ -100,21 +113,22 @@ const PortfolioContainer = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     // If all or none of the tags are selected, remove the 'tags' parameter
-    if (selectedTags.length === 0 || selectedTags.length === TAGS.length) {
+    if (selectedTags.length === 0 || selectedTags.length === ALL_TAGS.length) {
       params.delete("tags");
     } else {
       params.set("tags", selectedTags.join(URL_BREAK));
     }
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    const newUrl = `${window.location.pathname}?${getParams()}`;
     router.replace(newUrl, {
       scroll: false,
     });
   }, [selectedTags, router]);
 
   const selectNewProjects = useCallback(() => {
-    closeProject();
+    // closeProject();
     // Treat no tags as all tags
-    const allTags = !selectedTags.length || selectedTags.length === TAGS.length;
+    const allTags =
+      !selectedTags.length || selectedTags.length === ALL_TAGS.length;
     const filteredProjects = allTags
       ? [...allProjects]
       : allProjects.filter((project) =>
@@ -128,14 +142,18 @@ const PortfolioContainer = () => {
         filteredProjects.splice(index, 1);
       }
     }
-
-    // if (filteredProjects.length < 3) {
-    //   console.error("TODO: handle < 3 valid projects");
-    // }
     const newProjects = getRandomElements(filteredProjects, 3);
+
+    if (openProject) {
+      const project1 = allProjects.find((p) => p.id === openProject);
+      if (project1) {
+        newProjects[1] = project1;
+        expandProject(openProject);
+      }
+    }
     setSelectedProjects(newProjects);
     previousProjectsRef.current = newProjects; // Used to avoid showing last projects on change (see newProjects);
-  }, [selectedTags, closeProject]);
+  }, [selectedTags, openProject, expandProject]);
 
   useEffect(() => {
     selectNewProjects();
@@ -157,7 +175,6 @@ const PortfolioContainer = () => {
       false
     );
 
-    console.log("toggling group!", disable ? "disable" : "enable");
     setSelectedTags((prevTags) =>
       disable
         ? prevTags.filter((t) => !tags.includes(t))
@@ -171,33 +188,31 @@ const PortfolioContainer = () => {
       <Portfolio
         projects={selectedProjects}
         expandedSection={expandedSection}
-        descriptionVisible={descriptionVisible}
+        descriptionVisible={!!openProject}
         closeProject={closeProject}
         handleClick={clickOnVideo}
       />
-      <div
-        className={`controls-container ${descriptionVisible ? "hidden" : ""}`}
-      >
-        <div className="portfolio-instructions">
-          <h2>Here's three random things I made.</h2>
-          <h3>
-            Click to learn more, tweak the buttons to view different projects,
-            or
-            <button
-              type="button"
-              className={"btn"}
-              onClick={() => {
-                selectNewProjects();
-                smoothScrollTo("#portfolio", 500);
-              }}
-            >
-              show new projects.
-            </button>
-          </h3>
-        </div>
-        <div className="button-container">
+      <div className={`controls-and-toggle`}>
+        <button
+          aria-expanded={controlsVisible}
+          className={`toggle-button ${!!expandedSection ? "hidden" : ""}`}
+          onClick={toggleControls}
+        >
+          <span className="arrow">{controlsVisible ? "▼" : "▲"}</span>
+        </button>
+        <div
+          className={`controls ${
+            !!expandedSection || !controlsVisible ? "hidden" : ""
+          }`}
+        >
+          <div className="portfolio-instructions">
+            <h2>Here's three random things I made.</h2>
+            <h3>
+              Click a project to learn more, or use these buttons to view
+              different projects.
+            </h3>
+          </div>
           <div className="tag-buttons">
-            {/* todo: no nested buttons */}
             <div
               className={`btn-grp ${
                 CODE_BUTTS.some((tag) => selectedTags.includes(tag))
@@ -229,16 +244,31 @@ const PortfolioContainer = () => {
                 <PortfolioButton
                   key={tag}
                   tag={tag}
+                  displayName={tag.split("-")[0]}
                   isSelected={selectedTags.includes(tag)}
                   onClick={toggleTag}
                 />
               ))}
             </div>
-            <PortfolioButton
-              tag={"other"}
-              isSelected={selectedTags.includes("other")}
-              onClick={toggleTag}
-            />
+            <div className="simple-btn-container">
+              <PortfolioButton
+                tag={"other"}
+                isSelected={selectedTags.includes("other")}
+                onClick={toggleTag}
+              />
+            </div>
+            <div className="simple-btn-container">
+              <button
+                type="button"
+                className={"btn btn-normal"}
+                onClick={() => {
+                  selectNewProjects();
+                  smoothScrollTo("#portfolio", 500);
+                }}
+              >
+                Show new projects
+              </button>
+            </div>
           </div>
         </div>
       </div>

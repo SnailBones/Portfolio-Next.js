@@ -7,15 +7,35 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
-          source: "/project",
-          destination: "/",
-        },
-        {
           source: "/project/:project",
           destination: "/",
         },
       ],
     };
+  },
+  async redirects() {
+    return [
+      {
+        source: "/project",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/games/:project",
+        destination: "/project/:project",
+        permanent: false,
+      },
+      {
+        source: "/web/:project",
+        destination: "/project/:project",
+        permanent: false,
+      },
+      {
+        source: "/other/:project",
+        destination: "/project/:project",
+        permanent: false,
+      },
+    ];
   },
 };
 

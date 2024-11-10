@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import VideoSection from "../components/VideoSection";
-import { smoothScrollTo } from "@/utils/smoothScroll";
 import { Project } from "../components/Projects";
 import ProjectText from "./ProjectText";
 

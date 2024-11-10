@@ -42,8 +42,9 @@ $color-light: #fbfbfb;
 $color-light-muted: #e6e6ef;
 $color-grey: #414145;
 $color-dark: #181a20;
+$color-bright-blue: #9454ff;
 $color-blue: #633bc0;
-$color-deep: #3b3153;
+$color-deep-blue: #3b3153;
 $color-orange: #f97400;
 $color-gold: #d48c0e;
 $color-green: #54ff06;
@@ -63,7 +64,7 @@ body {
 p {
   a {
     text-decoration: none;
-    color: $color-blue;
+    color: $color-bright-blue;
     transition: color 0.2s;
     position: relative;
 
@@ -83,7 +84,6 @@ p {
       bottom: 0;
       width: 100%;
       height: 2px;
-      // background: $color-green;
       background: $color-blue;
       transform: scaleX(0);
     }
@@ -107,35 +107,10 @@ p {
 }
 
 .btn-normal {
-  background-color: $color-deep;
+  background-color: $color-deep-blue;
   &:hover {
     background-color: $color-blue;
   }
-}
-
-.btn-grp {
-  display: inline-block;
-  overflow: hidden;
-  font-size: 32px;
-  font-weight: 900;
-  margin: 4px;
-  padding: 4px 10px;
-  cursor: pointer;
-
-  background-color: none;
-  border: solid 3px $color-grey;
-  border-top-style: solid;
-  border-right-style: solid;
-  border-bottom-style: none;
-  border-left-style: solid;
-  border-radius: 80px 80px 0 0;
-  &:hover {
-    &:has(.btn:hover) {
-      transform: scale(1);
-    }
-    transform: scale(1.05);
-  }
-  transition: 0.2s;
 }
 
 .btn-on,
@@ -179,21 +154,6 @@ p {
   }
 
   &:hover::before {
-    height: 100%;
-  }
-}
-
-.btn-grp:hover:not(:has(.btn:hover)) .btn-on {
-  &::before {
-    height: 0%;
-  }
-}
-
-.btn-grp:hover:not(:has(.btn:hover)) {
-  & .btn-on::before {
-    height: 0%;
-  }
-  &.all-off .btn-off::before {
     height: 100%;
   }
 }

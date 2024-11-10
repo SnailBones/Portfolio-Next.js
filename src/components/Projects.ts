@@ -49,7 +49,7 @@ export const projects: Project[] = [
     imgSrc: "ball/cactris.mp4",
     description: "A match-three puzzle game played with your body.",
     year: 2020,
-    categories: ["game", "web", "game-design"],
+    categories: ["game", "web", "game-design", "web-design"],
     tools: ["JavaScript", "GLSL"],
   },
   {

@@ -3,12 +3,14 @@ import React from "react";
 
 interface PortfolioButtonProps {
   tag: string;
+  displayName?: string;
   isSelected: boolean;
   onClick: (tag: string) => void;
 }
 
 const PortfolioButton: React.FC<PortfolioButtonProps> = ({
   tag,
+  displayName,
   isSelected,
   onClick,
 }) => {
@@ -23,7 +25,7 @@ const PortfolioButton: React.FC<PortfolioButtonProps> = ({
         e.stopPropagation();
       }}
     >
-      {tag}
+      {displayName || tag}
     </button>
   );
 };

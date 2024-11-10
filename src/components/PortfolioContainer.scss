@@ -3,14 +3,14 @@
 .portfolio-container {
   height: 100vh;
   width: 100vw;
-  display: flex; // Flexbox ensures that portfolio & controls fit screen space
+  display: flex;
   flex-direction: column;
   background-color: $color-dark;
 }
 
 .portfolio {
-  flex: 1; // fit extra space in parent vertical flexbox
-  overflow: auto; // constrains inner content height
+  flex: 1;
+  overflow: auto;
   display: flex;
   flex-direction: row;
   @media (max-width: 767px) {
@@ -27,31 +27,93 @@
   }
 }
 
-.controls-container {
-  padding: 20px;
-  // flex: 0 0 20%;
-  overflow: hidden;
+.controls-and-toggle {
+  position: relative;
   transition: all 0.3s ease;
-  // height: 240px;
+}
+.controls {
+  padding: 20px;
+  overflow: hidden;
   &.hidden {
-    // flex: 0;
     height: 0;
     padding: 0;
   }
+  transition: all 0.3s ease;
+}
+
+.toggle-button {
+  &.hidden {
+    transform: translateY(0) translateX(-50%);
+  }
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateY(-100%) translateX(-50%);
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background-color: $color-dark;
+  color: $color-light;
+  border: none;
+  border-radius: 25% 25% 0 0;
+  cursor: pointer;
+  z-index: 1000;
 }
 
 .portfolio-instructions {
   text-align: center;
 }
 
-.button-container {
-  align-self: center;
+.tag-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   text-align: center;
-  margin-bottom: 10px;
-  position: relative;
 }
 
-.btn-free {
-  position: absolute;
-  bottom: 0;
+.btn-grp {
+  display: inline-block;
+  overflow: hidden;
+  font-size: 32px;
+  font-weight: 900;
+  margin: 0px 4px;
+  padding: 0px 10px;
+  cursor: pointer;
+
+  background-color: none;
+  border: solid 3px $color-grey;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: none;
+  border-left-style: solid;
+  border-radius: 80px 80px 0 0;
+  &:hover {
+    &:has(.btn:hover) {
+      transform: scale(1);
+    }
+    transform: scale(1.05);
+  }
+  transition: 0.2s;
+}
+
+.btn-grp:hover:not(:has(.btn:hover)) .btn-on {
+  &::before {
+    height: 0%;
+  }
+}
+
+.btn-grp:hover:not(:has(.btn:hover)) {
+  & .btn-on::before {
+    height: 0%;
+  }
+  &.all-off .btn-off::before {
+    height: 100%;
+  }
+}
+
+.simple-btn-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
