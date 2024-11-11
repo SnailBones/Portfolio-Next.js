@@ -206,10 +206,10 @@ const PortfolioContainer = () => {
           }`}
         >
           <div className="portfolio-instructions">
-            <h2>Here's three random things I made.</h2>
+            <h2>Here's three things I made.</h2>
             <h3>
-              Click a project to learn more, or use these buttons to view
-              different projects.
+              Click a project to learn more, or use these buttons to view more
+              projects.
             </h3>
           </div>
           <div className="tag-buttons">

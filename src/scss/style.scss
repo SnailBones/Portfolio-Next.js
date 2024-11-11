@@ -144,7 +144,7 @@ p {
     height: 100%;
   }
   &:hover::before {
-    height: 0%;
+    height: 20%;
   }
 }
 
@@ -154,6 +154,6 @@ p {
   }
 
   &:hover::before {
-    height: 100%;
+    height: 80%;
   }
 }

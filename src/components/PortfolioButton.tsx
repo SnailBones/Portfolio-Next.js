@@ -17,9 +17,7 @@ const PortfolioButton: React.FC<PortfolioButtonProps> = ({
   return (
     <button
       type="button"
-      className={`btn ${tag === "other" ? "btn-free " : ""}${
-        isSelected ? "btn-on" : "btn-off"
-      }`}
+      className={`btn ${isSelected ? "btn-on" : "btn-off"}`}
       onClick={(e) => {
         onClick(tag);
         e.stopPropagation();
