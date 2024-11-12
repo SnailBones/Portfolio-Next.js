@@ -1,15 +1,17 @@
 # Electric Power Fast
 
-As part of my role as Creative Developer at [RS21](https://rs21.io/), I built a dashboard for Argonne National Lab's _Electric Power Fast_ simulation, aka **EPFast**. I worked with ANL's engineers and RS21's design team to design and build an interactive visualization and interface for interacting with their simulation.
+As part of my role as Creative Developer at [RS21](https://rs21.io/), I built a **Vue.js** dashboard for Argonne National Lab's _Electric Power Fast_ simulation, aka **EPFast**. I worked with ANL's engineers and RS21's design team to design and build an interactive visualization and interface for interacting with their simulation.
 
-EPFast models disruptions to the electric power system, their cascading destructive effects (think Dominos!) and the resulting fragmentation of the grid. In this case, the disruption is a hurricane affecting the eastern interconnect, the connected portion of the US electric grid stretching from the Rocky Mountains to the Atlantic ocean. The data and visualization covers three affected components:
+EPFast models disruptions to the electric power system, their cascading destructive effects (think dominos!) and the **resulting fragmentation of the grid**. We tested the application on a model of the _Eastern Interconnect_, the connected portion of the US electric grid stretching from the Rocky Mountains to the Atlantic ocean. The data and visualization covers three affected components:
 
 Nodes include generators (i.e. power plants), loads (i.e. residential or commercial consumers of electricity) and transformers.
 
-Power lines connect the grid, showing the directional flow of energy.
+Power lines connect the grid, animated and labeled to show the directional flow of energy.
 
 Islands are regions in the grid that have become isolated through disruptions of lines. Disruptions cascade through the grid, often breaking it into numerous islands in various degrees of outage. Islands are visualized as polygons in their approximate area, and selecting an island highlights its lines, providing insight into its structure.
 
-Designing the visualization for islands was a complex task: they needed to be intuitive enough for nontechnical users to interact with, but display the detail necessary to inform expert's decisions. I iterated through prototypes and experimented with visualization techniques to design a visualization implementing the Voronoi algorithm.
+Designing the visualization for islands was a complex task: they needed to be intuitive enough for nontechnical users to interact with, but display the detail necessary to inform expert's decisions. I iterated through prototypes and experimented with visualization techniques, ultimately designing **a visualization implementing the Voronoi algorithm** implemented with **Turf.js**.
 
-Another challenge was the large scale of the data, which contains over 10,000 nodes. At larger views, we smoothly transition the node icons into a heatmap that provides insight into locations where the most generation and load has been lost.
+Another challenge was the large scale of the data. After I had built the application testing on the electric grid of Puerto Rico, the customer revealed their Eastern Interconnect model, covering over half the continental US and consisting of _over 150,000 nodes_. Delivered as a massive "GET" request, the scale of the data would often freeze the application. I worked to reduce the file size as much as possible, and modified the visualization to reduce visual clutter. At lower zoom levels, I implemented heatmaps displaying the locations where the most electricity generation and consumption has been lost, and a smooth transition between the heatmap and individual nodes as the user zooms in and out.
+
+See more pictures and videos on my [Vue portfolio](https://vue.ailanth.us/#/project/grid).

@@ -12,12 +12,13 @@ import "./PortfolioContainer.scss";
 import { select } from "framer-motion/client";
 
 const CODE_BUTTS = ["web", "game", "ml"];
-const DESIGN_BUTTS = ["web-design", "game-design", "other-design"];
+// const DESIGN_BUTTS = ["web-design", "game-design", "other-design"];
+const DESIGN_BUTTS = ["web-design", "game-design"];
 
 const BUTTON_LAYOUT = {
   code: CODE_BUTTS,
   design: DESIGN_BUTTS,
-  other: "other",
+  // other: "other",
 };
 
 const TAG_NAMES = {
@@ -26,7 +27,8 @@ const TAG_NAMES = {
   "other-design": "other",
 };
 
-const ALL_TAGS = [...CODE_BUTTS, ...DESIGN_BUTTS, "other"];
+// const ALL_TAGS = [...CODE_BUTTS, ...DESIGN_BUTTS, "other"];
+const ALL_TAGS = [...CODE_BUTTS, ...DESIGN_BUTTS];
 
 const URL_BREAK = "."; // Non-digit unreserved characters are "-._~"
 
@@ -122,18 +124,22 @@ const PortfolioContainer = () => {
     router.replace(newUrl, {
       scroll: false,
     });
-  }, [selectedTags, router]);
+  }, [selectedTags, router, getParams]);
 
   const selectNewProjects = useCallback(() => {
     // closeProject();
     // Treat no tags as all tags
     const allTags =
       !selectedTags.length || selectedTags.length === ALL_TAGS.length;
-    const filteredProjects = allTags
+    let filteredProjects = allTags
       ? [...allProjects]
       : allProjects.filter((project) =>
           selectedTags.some((tag) => project.categories.includes(tag))
         );
+    // No duplicate projects when you start with one open
+    if (openProject) {
+      filteredProjects = filteredProjects.filter((p) => p.id !== openProject);
+    }
     // Exclude old projects if there are enough new ones
     const oldProjects = previousProjectsRef.current;
     for (const oldProject of oldProjects) {
@@ -206,11 +212,11 @@ const PortfolioContainer = () => {
           }`}
         >
           <div className="portfolio-instructions">
-            <h2>Here's three things I made.</h2>
-            <h3>
-              Click a project to learn more, or use these buttons to view more
+            <h2>Here's 3 things I made.</h2>
+            <h4>
+              Click one to learn more, or click these buttons to filter
               projects.
-            </h3>
+            </h4>
           </div>
           <div className="tag-buttons">
             <div
@@ -250,13 +256,13 @@ const PortfolioContainer = () => {
                 />
               ))}
             </div>
-            <div className="simple-btn-container">
+            {/* <div className="simple-btn-container">
               <PortfolioButton
                 tag={"other"}
                 isSelected={selectedTags.includes("other")}
                 onClick={toggleTag}
               />
-            </div>
+            </div> */}
             <div className="simple-btn-container">
               <button
                 type="button"

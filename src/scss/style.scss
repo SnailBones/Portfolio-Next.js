@@ -92,12 +92,11 @@ p {
 .btn {
   position: relative;
   overflow: hidden;
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 900;
   margin: 4px;
   border: none;
-  border-radius: 8px;
-  padding: 10px;
+  border-radius: 0;
   color: $color-light;
   transition: 0.2s;
   &:hover {
