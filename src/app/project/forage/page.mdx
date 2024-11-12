@@ -1,5 +1,32 @@
 # Forage Albuquerque
 
-[Forage Albuquerque](https://forageabq.com/) is an online guide to edible plants in Albuquerque, created as a personal project using React and Next.js.
+[Forage Albuquerque](https://forageabq.com/) is an online guide to New Mexico's edible plants, built from scratch in React and Next.js as a personal project.
 
-I designed the site with a focus on accessibility and mobile use, enabling plant identification in the field.
+## Design
+
+As a longtime forager, I've always been excited about learning about the uses of the plants around me and incorporating them into my cooking. In my hometown of Albuquerque, New Mexico, an abundance of food producing plants go greatly underutilized, including numerous **introduced species**, _the harvesting of which is an ecological benefit!_ I conceived of Forage Albuquerque as a project to **unblock access this hyper-local, sustainable food sources**.
+
+By speaking with friends interested in foraging, I learned that key barriers to foraging are:
+
+- Lack of knowledge about what local plants are good to eat.
+- Lack of confidence in correct identification, and fear of confusion with a toxic species.
+- Lack of knowledge about how to prepare foraged ingredients and incorporate them in cooking. (First attempts often wound up less-than-delicious!)
+- Safety concerns about consuming food grown in the city.
+
+I invested current resources for dealing with these challenges. Citizen-science sites like [iNaturalist](https://www.inaturalist.org/home) make it easy to locate specific plant species, apps like [Seek](https://www.inaturalist.org/pages/seek_app) expedite identification, and [Plants for a Future](https://pfaf.org/user/) is an excellent resource cataloguing the uses of thousands of different plant species. However, each of these resources alone solves only one of several bottlenecks, all need experience to be used effectively, and crucially, each only provides information for a plant that the user has chosen to look up. At the time, no online resource existed with an overview of the different foraging options available in Albuquerque or any city in the Southwest. In short, without a deep knowledge of local flora or a personal connection to other foragers, most people didn't know where to start.
+
+I set out to solve this challenge with a guide giving prospective foragers a clear, simple starting point, and combining the knowledge of multiple experienced foragers into one easily accessible place. At the guide's core is a **landing page highlighting the plants currently in season**. Clicking on a plant brings you to a page with more information and images for identification. Each plant description addresses the remaining barriers with tips on telling the plant apart from its local lookalikes, other potential hazards, and recipes ideas.
+
+The app also includes a navbar providing access to a comprehensive list of all plants, an explanation of the benefits of foraging ("Why Forage?"), and a guide to foraging safely and ethically.
+
+Designing a **mobile-friendly site** was a key consideration, as folks are unlikely to bring their laptops on a foraging walk!
+
+The site's current color scheme inspired by the Sandia Mountains and their pink color at sunset.
+
+# Implementation
+
+I started work on Forage Albuquerque in August 2023, as my first major project in **React**. Having previously worked with Vue.js and Angular, I found the premise familiar, and the JSX syntax elegant and fun. I was able to further enhance my speed of iteration, particularly on CSS styling, by working with GPT-4, which had recently come out at the time.
+
+It soon became clear that I needed an organizational structure to handle the number of different pages and components required. So I ported the application into **Next.js**.
+
+I realize that there's a lot of foraging knowledge that I don't yet know, so ultimately I'd like this project to grow beyond me. To facilitate community contribution and enable others to set up similar projects for their own cities or regions, I released the [source code](https://github.com/SnailBones/forage-abq) under the GPL license. I used Github actions to set up continuous deployment to my DigitalOcean server: all changes merged to the `main` branch are immediately visible on the deployed site.

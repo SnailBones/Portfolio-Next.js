@@ -97,18 +97,12 @@
   transition: 0.2s;
 }
 
-.btn-grp:hover:not(:has(.btn:hover)) .btn-on {
-  &::before {
-    height: 0%;
-  }
-}
-
 .btn-grp:hover:not(:has(.btn:hover)) {
   & .btn-on::before {
-    height: 0%;
+    height: 20%;
   }
   &.all-off .btn-off::before {
-    height: 100%;
+    height: 80%;
   }
 }
 
