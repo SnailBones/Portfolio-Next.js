@@ -1,7 +1,13 @@
 # Renaissance GAN
 
-For my capstone project at Colorado College, I worked on a team to build a neural network model for creating music and art.
+For my senior capstone project at Colorado College, I worked on a team to build a neural network model for creating music and art.
 
-We used a Generative Adversarial Neural Network (GAN). By training two competing networks, a GAN learns to output data resembling its input. While GANs are commonly applied to image generation, we applied the same technique to generating music by reducing the problem of music generation to that of image generation. Using a two-dimensional convolutional GAN and the MIDI file format, our model produces multi-track songs resembling the human-generated input.
+My team set out to explore the question: can computers be creative? We put it to the test by building a convolutional Generative Adversarial Neural Network (GAN). By training two competing networks, a GAN learns to output data resembling its input.
 
-Learn more, view source code and generated images on the [project's Github](https://github.com/SnailBones/RenaissanceGAN).
+We were among the first to apply a GAN to music gerenation. We did this by applying by converting MIDI files into images, reducing the problem of music generation to that of image generation. Elongating our convolutional kernel shape improved the GAN's ability to play chords by recognizing the relationship of notes in time. Our model produces multi-track songs resembling the human-generated input.
+
+I designed our network in Keras, and built the supporting data infrastructure in Python.
+
+[View our final presentation.](https://docs.google.com/presentation/d/e/2PACX-1vQtBUPu3ctTE3VtqHPVd9UHych-8XlQDgMbSrPDRJP-RdpZ7_HvPmRjOgWEkWn_lTagAPwueQAqDAMt/pub?start=false&loop=false&delayms=6000)
+
+[View source code on the project's Github.](https://github.com/SnailBones/RenaissanceGAN)
