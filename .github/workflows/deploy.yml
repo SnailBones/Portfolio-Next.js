@@ -39,7 +39,8 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
-          source: "./"
+          # source: "./"
+          source: "./public ./package.json ./next.config.js ./.next"
           target: "/var/www/portfolio"
 
       - name: Restart PM2 process
