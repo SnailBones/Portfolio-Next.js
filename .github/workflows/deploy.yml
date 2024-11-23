@@ -34,7 +34,7 @@ jobs:
         run: npm run build
 
       - name: List build outputs
-        run: ls -R
+        run: ls -A
 
       - name: Deploy
         uses: appleboy/scp-action@master
