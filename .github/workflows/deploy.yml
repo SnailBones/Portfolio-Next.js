@@ -49,7 +49,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           source: "./deploy/"
           target: "/var/www/portfolio"
-          strip_components: 1
+          strip_components: 2
 
       - name: Restart PM2 process
         uses: appleboy/ssh-action@master
