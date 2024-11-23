@@ -41,6 +41,10 @@ jobs:
           cp -r public deploy/
           cp package.json next.config.js deploy/
 
+      - name: List deployment directory
+        run: |
+          ls -A deploy
+
       - name: Deploy
         uses: appleboy/scp-action@master
         with:
