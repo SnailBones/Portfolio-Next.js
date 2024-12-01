@@ -63,6 +63,12 @@
 
 .portfolio-instructions {
   text-align: center;
+  h2 {
+    font-size: 2rem;
+  }
+  h4 {
+    font-size: 1.5rem;
+  }
 }
 
 .tag-buttons {
@@ -75,7 +81,7 @@
 .btn-grp {
   display: inline-block;
   overflow: hidden;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 900;
   margin: 0px 10px;
   padding: 0px 10px;
@@ -88,21 +94,22 @@
   border-bottom-style: none;
   border-left-style: solid;
   border-radius: 20px 20px 0 0;
-  &:hover {
-    &:has(.btn:hover) {
-      transform: scale(1);
-    }
-    transform: scale(1.05);
-  }
   transition: 0.2s;
+
+  &:hover:not(:has(.btn:hover)) {
+    box-shadow: 0px 40px 40px $color-blue inset;
+    .nested-btn-title {
+      transform: scale(1.05);
+    }
+  }
 }
 
 .btn-grp:hover:not(:has(.btn:hover)) {
-  & .btn-on::before {
-    height: 20%;
+  & .on .circle::before {
+    height: 70%;
   }
-  &.all-off .btn-off::before {
-    height: 80%;
+  &.all-off .off .circle::before {
+    height: 30%;
   }
 }
 

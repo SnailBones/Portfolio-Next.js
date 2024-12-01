@@ -14,16 +14,16 @@ const PortfolioButton: React.FC<PortfolioButtonProps> = ({
   onClick,
 }) => {
   return (
-    <button
-      type="button"
-      className={`btn ${isSelected ? "btn-on" : "btn-off"}`}
+    <div
+      className={`btn btn-toggle ${isSelected ? "on" : "off"}`}
       onClick={(e) => {
         onClick(tag);
         e.stopPropagation();
       }}
     >
+      <span className="circle"></span>
       {displayName || tag}
-    </button>
+    </div>
   );
 };
 

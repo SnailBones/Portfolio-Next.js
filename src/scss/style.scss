@@ -99,59 +99,58 @@ p {
   border-radius: 0;
   color: $color-light;
   transition: 0.2s;
-  &:hover {
-    transform: scale(1.05);
-  }
+  user-select: none;
 }
 
 .btn-normal {
   background-color: $color-deep-blue;
   &:hover {
     background-color: $color-blue;
+    transform: scale(1.05);
   }
 }
 
-.btn-on,
-.btn-off {
-  z-index: 3;
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: $color-grey;
-    z-index: -2;
+.btn-toggle {
+  font-size: 1.5rem;
+  background-color: transparent;
+  &.on {
+    background-color: $color-deep-blue;
+    .circle {
+      &::before {
+        height: 100%;
+      }
+    }
   }
-  &::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 0%;
+  &:hover {
+    transform: scale(1.05);
     background-color: $color-blue;
-    transition: height 0.3s ease-in-out;
-    z-index: -1;
+    &.on .circle::before {
+      height: 70%;
+    }
+    &.off .circle::before {
+      height: 30%;
+    }
   }
-}
-
-.btn-on {
-  &::before {
-    height: 100%;
-  }
-  &:hover::before {
-    height: 20%;
-  }
-}
-
-.btn-off {
-  &::before {
-    height: 0%;
-  }
-
-  &:hover::before {
-    height: 80%;
+  .circle {
+    position: relative;
+    display: inline-block;
+    width: 0.75em;
+    height: 0.75em;
+    margin-right: 0.25em;
+    border-radius: 50%;
+    border: 2px solid $color-grey;
+    // background-color: transparent;
+    background-color: $color-dark;
+    overflow: hidden;
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background-color: $color-blue;
+      transition: height 0.4s ease-in-out;
+    }
   }
 }
