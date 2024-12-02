@@ -100,7 +100,9 @@ const VideoSection: React.FC<VideoSectionProps> = ({
                 key={project.imgSrc}
                 loop
                 muted
-                ref={(el) => (videoRef.current = el)}
+                ref={(el) => {
+                  videoRef.current = el;
+                }}
               >
                 <source src={`/img/${project.imgSrc}`} type="video/mp4" />
                 Your browser does not support the video tag.
