@@ -218,7 +218,7 @@ const PortfolioContainer = () => {
               below.
             </h4>
           </div>
-          <div className="tag-buttons">
+          <div className="portfolio-buttons">
             <div
               className={`btn-grp ${
                 CODE_BUTTS.some((tag) => selectedTags.includes(tag))

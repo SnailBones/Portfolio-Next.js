@@ -38,6 +38,10 @@
     height: 0;
     padding: 0;
   }
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
   transition: all 0.3s ease;
 }
 
@@ -71,7 +75,8 @@
   }
 }
 
-.tag-buttons {
+.portfolio-buttons {
+  flex-basis: 921px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -83,17 +88,14 @@
   overflow: hidden;
   font-size: 1.5rem;
   font-weight: 900;
-  margin: 0px 10px;
-  padding: 0px 10px;
+  margin: 4px 6px;
+  padding: 8px;
   cursor: pointer;
 
   background-color: none;
   border: solid 3px $color-grey;
-  border-top-style: solid;
-  border-right-style: solid;
-  border-bottom-style: none;
-  border-left-style: solid;
-  border-radius: 20px 20px 0 0;
+  border-style: solid;
+  border-radius: 8px;
   transition: 0.2s;
 
   &:hover:not(:has(.btn:hover)) {
@@ -117,4 +119,5 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  margin: 11px 0;
 }
