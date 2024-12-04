@@ -60,7 +60,7 @@ const Portfolio = ({
             key="sidebar"
             className={"sidebar " + (descriptionVisible ? "visible" : "hidden")}
           >
-            <ProjectText markdownPath={`${expandedSection}/page.mdx`} />
+            <ProjectText projectID={expandedSection} />
           </div>
         )}
       </motion.div>

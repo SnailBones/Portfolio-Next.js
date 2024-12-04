@@ -1,19 +1,25 @@
-// ProjectText.tsx
-import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { projects } from "./Projects";
+import { ComponentType } from "react";
 
 interface ProjectTextProps {
-  markdownPath: string;
+  projectID: string;
   className?: string;
 }
 
-const ProjectText: React.FC<ProjectTextProps> = ({ markdownPath }) => {
-  const ComponentA = dynamic(() => import(`@/app/project/` + markdownPath));
+const components: { [key: string]: ComponentType } = {};
+projects.forEach(
+  (project) =>
+    (components[project.id] = dynamic(
+      () => import(`@/app/project/${project.id}/page.mdx`)
+    ))
+);
+
+const ProjectText: React.FC<ProjectTextProps> = ({ projectID }) => {
+  const Text = components[projectID];
   return (
     <div className="mdx-content">
-      {/* {MDXComponent && mdxContent ? <MDXComponent /> : <p>Loading...</p>} */}
-      {/* <MyMDXFile /> */}
-      <ComponentA />
+      {Text ? <Text /> : <div>Project {projectID} not found.</div>}
     </div>
   );
 };
