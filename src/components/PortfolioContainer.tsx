@@ -214,8 +214,7 @@ const PortfolioContainer = () => {
           <div className="portfolio-instructions">
             <h2>Here's 3 things I made.</h2>
             <h4>
-              Click one to learn more, or filter projects with the buttons
-              below.
+              Click one to learn more, or filter projects with these buttons.
             </h4>
           </div>
           <div className="portfolio-buttons">
