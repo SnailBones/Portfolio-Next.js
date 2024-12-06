@@ -9,33 +9,12 @@ interface TreeCanvasProps {
   height: number;
 }
 
-const SIN_PRECISION = 128;
-const SIN_LOOKUP_TABLE = [];
-for (var i = 0; i < SIN_PRECISION / 4; i++) {
-  // Only quarter SIN_PRECISION.
-  SIN_LOOKUP_TABLE.push(Math.sin((i / SIN_PRECISION) * 2 * Math.PI));
-}
-
-// fastSin(theta) {
-//   var index = Math.floor(theta * RADIANS_TO_TABLE) % SIZE;
-//   var sign = 1;
-//   if (index > SIZE / 2) sign = -1;
-//   if (index % SIZE / 2 > SIZE / 4) index = SIZE / 2 - index;
-//   return sign * table[index % (SIZE / 4)];
-// }
-
-// fastCos(theta) {
-//   return fastSin(theta + Math.PI / 2);
-// }
+const xgap = 20;
+const ygap = 20;
 
 export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  //   const count_up = 32;
-  //   //   const count_across = 64;
-  //   const count_across = 128;
-  //   const xgap = 2 * gap; // these numbers get overwritten, oops
-  const ygap = 15;
   const growSpeed = 0.02; // Percent of tree per frame
   const treeHeight = 50; // Maximum height in pixels
 
@@ -48,9 +27,6 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
     const ctx = canvas.getContext("2d");
     if (!ctx || ctx === null) return;
     ctx.imageSmoothingEnabled = false;
-
-    const xgap = 20; // adjust this value
-    const ygap = 20; // adjust this value
 
     // Calculate counts based on canvas size
     let count_across: number = 0;
@@ -292,8 +268,7 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
         this.x = static_x - centerX;
         let static_y = cursor.clientY - rect.top;
         this.y = static_y - centerY;
-        var mouse_speed = getDistance(this.x - this.px, this.y - this.py * 2);
-        // var ymax = Math.min(plants.length, static_y / ygap); // todo: reenable this optimization
+        var mouse_speed = getDistance(this.x - this.px, this.y - this.py);
         var ymax = plants.length;
         var xmax = plants[0].length;
 
@@ -308,7 +283,7 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
               let distance = getDistance(xdistance, ydistance);
               let angle = Math.max(
                 0,
-                ((0.008 - distance / 20000) * mouse_speed * mouse_speed) / 50
+                ((0.008 - distance / 20000) * mouse_speed * 200) / 50
               );
               if (angle > Math.PI / 4) {
                 let new_height = Math.max(0, plant.height - angle);
@@ -339,7 +314,7 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
     var pointer = new Pointer();
 
     window.addEventListener("mousemove", pointer.move.bind(pointer), false);
-    canvas.addEventListener("touchmove", pointer.move.bind(pointer), false);
+    window.addEventListener("touchmove", pointer.move.bind(pointer), false);
 
     function positionTrees() {
       if (!canvas || !canvas.parentElement) return;
@@ -353,10 +328,6 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
       count_across = Math.floor(canvas.width / xgap);
       count_up = Math.floor(canvas.height / ygap);
       createTrees();
-
-      // Maintain the desired gap
-      //   const xgap = canvas.width / count_across;
-      //   const ygap = canvas.height / count_up;
 
       for (var i = 0; i < plants.length; i++) {
         for (var j = 0; j < plants[i].length; j++) {
