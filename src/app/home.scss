@@ -29,6 +29,10 @@ body {
   }
 }
 
+:root:has(.no-doc-scroll) {
+  overflow: hidden;
+}
+
 .signature {
   top: 10%;
   font-family: "Montserrat Alternates", helvetica, sans-serif;

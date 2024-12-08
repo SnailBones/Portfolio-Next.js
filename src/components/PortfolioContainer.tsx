@@ -68,13 +68,11 @@ const PortfolioContainer = () => {
   }, [router, section, getParams]);
 
   const expandProject = useCallback((label: string) => {
-    document.body.style.overflow = "hidden";
     smoothScrollTo("#portfolio");
     setExpandedSection(label);
   }, []);
 
   const closeProject = useCallback(() => {
-    document.body.style.overflow = "unset";
     setExpandedSection("");
     closeDescription();
   }, [closeDescription]);
@@ -190,7 +188,11 @@ const PortfolioContainer = () => {
   };
 
   return (
-    <div className="portfolio-container">
+    <div
+      className={`portfolio-container ${
+        !!expandedSection ? "no-doc-scroll" : ""
+      }`}
+    >
       <Portfolio
         projects={selectedProjects}
         expandedSection={expandedSection}
