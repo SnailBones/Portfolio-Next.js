@@ -15,11 +15,15 @@ import { GetStaticProps } from "next";
 const Home = () => {
   const [isRealName, setIsRealName] = useState(false);
 
+  document.body.style.overflow = isRealName ? "unset" : "hidden";
+
   const evolve = () => {
     if (!isRealName) {
       setTimeout(() => {
         smoothScrollTo("#portfolio", 2000);
       }, 1000);
+    } else {
+      smoothScrollTo(".background", 2000);
     }
     setIsRealName(!isRealName);
   };

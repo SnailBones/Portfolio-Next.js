@@ -8,18 +8,21 @@ interface TreeCanvasProps {
   width: number;
   height: number;
 }
-
+// Tree positioning
 const xgap = 20;
 const ygap = 20;
 
+const treeHeight = 50; // Maximum height in pixels
+const growSpeed = 0.02; // Percent of tree per frame
+
+const waitTime = 1.2; // Seconds after moving mouse to start growth
+
+function getDistance(dx: number, dy: number) {
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
 export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const growSpeed = 0.02; // Percent of tree per frame
-  const treeHeight = 50; // Maximum height in pixels
-
-  const spurtSize = 750; // size of growth spurt, measured in units of fully grown trees;
-  const waitTime = 400; // milliseconds after damage to grow
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -33,11 +36,8 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
     let count_up: number = 0;
 
     var plants: Plant[][] = [];
-    var totalCarbon = 150;
-    var carbon = totalCarbon; // Carbon in atmosphere, i.e. a weird way of keeping track of total negative trees
 
-    var active = true; // One initial grow at begining to cull overpopulated trees.
-    var growthGoal = 0; //Initial value doesn't matter, used to track growth spurts
+    var active = true;
 
     let centerX = canvas.width * 0.5;
     let centerY = canvas.height * 0.5;
@@ -47,12 +47,11 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
       y: number;
       height: number;
       angle: number;
-      // TODO no more x and y
-      constructor(x: number, y: number, height: number) {
-        this.x = x;
-        this.y = y;
+      constructor(height: number) {
         this.height = height;
-        this.angle = 0; // but performance!
+        this.x = 0;
+        this.y = 0;
+        this.angle = 0;
       }
       color() {
         return (
@@ -61,95 +60,57 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
           "," +
           (this.y / 4 + 256 - this.height * 128) +
           ", " +
-          192 * Math.abs(this.angle) +
+          (this.angle === 0 ? 0 : Math.pow(Math.abs(this.angle), 0.5) * 200) +
           ")"
         );
-      } //Math.sqrt(Math.abs(this.angle))+")"};
+      }
       drawMe() {
         if (!ctx) return;
-        const xpos = this.x;
-        const ypos = this.y;
         ctx.lineWidth = 2;
-        const trunkHeight = treeHeight;
         const sin = Math.sin(this.angle);
-        // const sin = 0;
         const cos = Math.cos(this.angle);
-        // const cos = 1;
-        const basex = sin * this.height * trunkHeight + xpos;
-        const basey = -cos * this.height * trunkHeight + ypos;
-        ctx.strokeStyle = "#653";
-        ctx.fillStyle = "#012";
+        const basex = sin * this.height * treeHeight + this.x;
+        const basey = -cos * this.height * treeHeight + this.y;
         ctx.strokeStyle = this.color();
-        drawLine(xpos, ypos, basex, basey, ctx);
+        drawLine(this.x, this.y, basex, basey, ctx);
       }
 
       updateAngle() {
-        let finnick = 0.01;
-        if (this.angle > finnick) {
-          this.angle *= 0.95;
-        } else if (this.angle < -finnick) {
-          this.angle *= 0.95;
+        const finnick = 0.01;
+        if (this.angle > finnick || this.angle < -finnick) {
+          this.angle *= 0.93;
         } else {
           this.angle = 0;
         }
       }
 
-      growMe(y: any, x: number) {
-        let friendHeight = getMeanFriendHeight(y, x);
-        let meanFriendHeight = friendHeight * 8;
-        if (this.height == 0) {
-          if (
-            (meanFriendHeight >= 0.4 && meanFriendHeight < 1) ||
-            (carbon > totalCarbon - 1 && (x == 0 || x == count_across - 1))
-          ) {
+      growMe(y: number, x: number) {
+        const oldHeight = this.height;
+        const meanFriendHeight = getMeanFriendHeight(y, x);
+        const totalFriendHeight = meanFriendHeight * 8;
+        if (this.height === 0) {
+          if (totalFriendHeight >= 0.4 && totalFriendHeight < 1) {
             this.height += growSpeed;
-            carbon -= growSpeed;
           }
         } else if (
-          meanFriendHeight + this.height >= 2.2 &&
-          friendHeight >= this.height - 0.2
+          totalFriendHeight + this.height >= 2.2 &&
+          meanFriendHeight >= this.height - 0.2
         ) {
-          carbon += this.height;
           this.height = 0.0;
-        } else if (meanFriendHeight + this.height < 1.5) {
-          carbon -= growSpeed;
+        } else if (totalFriendHeight + this.height < 1.5) {
           this.height += growSpeed;
         }
+        return this.height !== oldHeight;
       }
     }
-
-    // Create all the trees here with updated counts
-    function createTrees() {
-      carbon = totalCarbon;
-      plants = [];
-      for (let i = 0; i < count_up; i++) {
-        let row = [];
-        for (let j = 0; j < count_across; j++) {
-          let height = Math.random() + 0.25;
-          carbon -= height;
-          row.push(new Plant(0, 0, height));
-        }
-        plants.push(row);
-      }
-    }
-    // createTrees();
-
-    const step = () => {
-      draw();
-      requestAnimationFrame(step);
-    };
-    positionTrees();
-    step();
 
     function getMeanFriendHeight(y: number, x: number) {
       let row = plants[y];
       let rowDown, rowUp;
       let maxX = row.length - 1;
       let maxY = plants.length - 1;
-      // let neighbors = [];
       let total = 0;
       let friendCount = 0;
-      //let offset = y%2? 1 : -1
 
       let onTop = y == 0,
         onRight = x == maxX,
@@ -200,8 +161,6 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
       return friendHeight;
     }
 
-    // Drawing functions
-
     function drawLine(
       start_x: number,
       start_y: number,
@@ -216,30 +175,20 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
     }
 
     //handles drawing and growing
-    function draw() {
+    function growAndDraw() {
       if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      let oldCarbon = carbon;
-
+      let changed = false;
       for (var i = 0; i < plants.length; i++) {
         for (var j = 0; j < plants[i].length; j++) {
           if (active) {
-            plants[i][j].growMe(i, j);
+            changed = plants[i][j].growMe(i, j) || changed;
           }
           plants[i][j].drawMe();
           plants[i][j].updateAngle();
         }
       }
-      // rather than stopping at zero, the goalpost is 50 more trees
-      // than when growing started.
-      // or auto stop when growth just doesn't happen
-      // or NOT when you start breaking it
-      // or NOT when a tree dies and breaks the carbon
-      // but yes when the numbers happen to line exactly up yeah
-      if (active && (carbon <= growthGoal || carbon == oldCarbon)) {
-        active = false;
-      }
+      if (!changed) active = false;
     }
 
     class Pointer {
@@ -262,38 +211,45 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
       move(e: MouseEvent | TouchEvent) {
         if (!canvas) return;
         e.preventDefault();
-        var cursor = e instanceof MouseEvent ? e : e.targetTouches[0];
-        var rect = canvas.getBoundingClientRect();
-        let static_x = cursor.clientX - rect.left;
+        const cursor = e instanceof MouseEvent ? e : e.targetTouches[0];
+        const rect = canvas.getBoundingClientRect();
+        const static_x = cursor.clientX - rect.left;
         this.x = static_x - centerX;
-        let static_y = cursor.clientY - rect.top;
+        const static_y = cursor.clientY - rect.top;
         this.y = static_y - centerY;
-        var mouse_speed = getDistance(this.x - this.px, this.y - this.py);
-        var ymax = plants.length;
-        var xmax = plants[0].length;
+        const x_speed = this.x - this.px;
+        const mouse_speed = getDistance(x_speed, this.y - this.py);
+        const ymax = plants.length;
+        const xmax = plants[0].length;
+
+        const impactRadius = 200;
 
         for (var i = 0; i < ymax; i++) {
           for (var j = 0; j < xmax; j++) {
             const plant = plants[i][j];
-            // Optimization: skip the square root calculation
-            // if we know it's far enough away via Euclidian distance
             let xdistance = this.x - plant.x;
-            let ydistance = (this.y - plant.y) * 2;
-            if (Math.abs(xdistance) + Math.abs(ydistance) < 200) {
-              let distance = getDistance(xdistance, ydistance);
-              let angle = Math.max(
-                0,
-                ((0.008 - distance / 20000) * mouse_speed * 200) / 50
-              );
-              if (angle > Math.PI / 4) {
-                let new_height = Math.max(0, plant.height - angle);
-                carbon += plant.height - new_height;
+            let ydistance = this.y - plant.y;
+
+            if (
+              plant.height > 0 &&
+              Math.abs(xdistance) + Math.abs(ydistance) < impactRadius
+            ) {
+              const distance = getDistance(xdistance, ydistance);
+              const impact = 1 - distance / impactRadius;
+              let angle = (impact * mouse_speed) / 100;
+              if (this.x > plant.x) {
+                angle = -angle;
+              }
+              angle += (impact * x_speed) / 150;
+              plant.angle += angle;
+              const posAngle = Math.abs(plant.angle);
+              if (posAngle > Math.PI / 2) {
+                const new_height = Math.max(
+                  0,
+                  plant.height - (posAngle - Math.PI / 2) * 5
+                );
                 plant.height = new_height;
-              } else {
-                if (this.x > plant.x) {
-                  angle = -angle;
-                }
-                plant.angle += angle;
+                if (new_height === 0) plant.angle = 0;
               }
             }
           }
@@ -301,25 +257,30 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
 
         this.px = this.x;
         this.py = this.y;
-        if (carbon > -10000) {
-          growthGoal = carbon - spurtSize;
-          // start regrowing after 2 seconds of no activity
-          window.clearTimeout(this.timer);
-          this.timer = window.setTimeout(() => {
-            active = true;
-          }, waitTime);
-        }
+        active = false;
+        window.clearTimeout(this.timer);
+        this.timer = window.setTimeout(() => {
+          active = true;
+        }, waitTime * 1000);
       }
     }
-    var pointer = new Pointer();
 
-    window.addEventListener("mousemove", pointer.move.bind(pointer), false);
-    window.addEventListener("touchmove", pointer.move.bind(pointer), false);
+    function createTrees(count_across: number, count_up: number) {
+      plants = [];
+      for (let i = 0; i < count_up; i++) {
+        const row = [];
+        for (let j = 0; j < count_across; j++) {
+          const height = Math.random() + 0.25;
+          row.push(new Plant(height));
+        }
+        plants.push(row);
+      }
+      return plants;
+    }
 
-    function positionTrees() {
+    function placeTrees() {
       if (!canvas || !canvas.parentElement) return;
 
-      // Resizing Canvas
       canvas.width = canvas.parentElement.offsetWidth;
       canvas.height = canvas.parentElement.offsetHeight;
       centerX = canvas.width * 0.5;
@@ -327,12 +288,12 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
 
       count_across = Math.floor(canvas.width / xgap);
       count_up = Math.floor(canvas.height / ygap);
-      createTrees();
+      plants = createTrees(count_across, count_up);
 
       for (var i = 0; i < plants.length; i++) {
         for (var j = 0; j < plants[i].length; j++) {
-          let height = i - plants.length / 2;
-          let ypos = ygap * height + ygap * 2;
+          const height = i - plants.length / 2;
+          const ypos = ygap * height + ygap * 2;
           let xpos = xgap * (j - plants[i].length / 2) + height * 2;
           if (i % 2 === 0) {
             xpos -= xgap / 2;
@@ -341,21 +302,28 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
           plants[i][j].y = ypos;
         }
       }
+      active = true; // grow to clear excess trees before render
     }
 
-    // Event listeners and initialization logic
-    window.addEventListener("resize", positionTrees);
+    const pointer = new Pointer();
 
-    // Clean up
+    window.addEventListener("mousemove", pointer.move.bind(pointer), false);
+    window.addEventListener("touchmove", pointer.move.bind(pointer), false);
+    window.addEventListener("resize", placeTrees);
+
+    const step = () => {
+      growAndDraw();
+      requestAnimationFrame(step);
+    };
+    placeTrees();
+    step();
+
     return () => {
-      window.removeEventListener("resize", positionTrees);
+      window.removeEventListener("mousemove", pointer.move.bind(pointer));
+      window.removeEventListener("touchmove", pointer.move.bind(pointer));
+      window.removeEventListener("resize", placeTrees);
     };
   }, [gap, width, height]);
-
-  // Additional functions and event handlers
-  function getDistance(dx: number, dy: number) {
-    return Math.sqrt(dx * dx + dy * dy);
-  }
 
   return (
     <div className="canvas-container">
