@@ -1,5 +1,7 @@
 // Redirect from addresses of old Vue version of portfolio, ensuring that links continue to work.
 
+"use client";
+
 import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
