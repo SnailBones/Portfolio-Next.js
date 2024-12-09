@@ -119,7 +119,6 @@
   &:active {
     transition: 0s;
     opacity: 1;
-    // transform: scale(0.96) translateY(5%);
     transform: scale(0.96);
   }
 
@@ -138,7 +137,6 @@
   &.quit {
     top: 10px;
     left: 10px;
-    // transform: none;
     .inner-button {
       margin-top: -0.5em;
     }
@@ -158,7 +156,23 @@
   }
 }
 .mdx-content {
-  // width: 50%;
-  padding: 40px;
-  overflow-y: auto; /* For long content */
+  padding: 60px;
+  overflow-y: auto;
+  figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+
+    img {
+      width: 100%;
+      max-width: 1000px;
+      height: auto;
+      border-radius: 16px;
+    }
+
+    figcaption {
+      margin-top: 10px;
+    }
+  }
 }

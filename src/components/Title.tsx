@@ -1,35 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { smoothScrollTo } from "@/utils/smoothScroll";
 
-export default function Title() {
-  const [isRealName, setIsRealName] = useState(false);
-
-  useEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
-
-  function evolve() {
-    if (!isRealName) {
-      document.body.style.overflow = "hidden";
-      setTimeout(() => {
-        smoothScrollTo("#portfolio", 2000);
-      }, 1000);
-    } else {
-      smoothScrollTo(".background", 2000);
-    }
-    setIsRealName(!isRealName);
-  }
-
+export default function Title({
+  isRealName,
+  handleClick,
+}: {
+  isRealName: boolean;
+  handleClick: () => void;
+}) {
   return (
     <div className="screen-space">
       <h1
         className={`signature ${isRealName ? "secret" : "no-doc-scroll"}`}
-        onClick={evolve}
+        onClick={handleClick}
       >
         <span className="l cap">a</span>
         <span className="l">i</span>

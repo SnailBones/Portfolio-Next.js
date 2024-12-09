@@ -1,3 +1,4 @@
+import TreeCanvas from "@/components/treeViz/treeViz";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,7 +13,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="background">
+          <TreeCanvas />
+        </div>
+        {children}
+      </body>
     </html>
   );
 }

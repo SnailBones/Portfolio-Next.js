@@ -257,13 +257,6 @@ const PortfolioContainer = () => {
                 />
               ))}
             </div>
-            {/* <div className="simple-btn-container">
-              <PortfolioButton
-                tag={"other"}
-                isSelected={selectedTags.includes("other")}
-                onClick={toggleTag}
-              />
-            </div> */}
             <div className="simple-btn-container">
               <button
                 type="button"

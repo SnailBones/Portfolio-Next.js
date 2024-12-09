@@ -112,14 +112,13 @@ export const projects: Project[] = [
       "A Convolutional Generative Adversarial Network for creating music and art.",
     categories: ["ml"],
   },
-  // Disabling these two until images are fixed
-  // {
-  //   id: "nature",
-  //   name: "Nature Now",
-  //   imgSrc: "museum/models/labside.jpg",
-  //   description: "Design for a museum exhibit bringing the diorama up-to-date.",
-  //   categories: ["other-design"],
-  // },
+  {
+    id: "nature",
+    name: "Nature Now",
+    imgSrc: "museum/models/close.jpg",
+    description: "Design for a museum exhibit bringing the diorama up-to-date.",
+    categories: ["web-design", "other-design"],
+  },
   // {
   //   id: "plays",
   //   name: "Plays",
