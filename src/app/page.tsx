@@ -15,13 +15,12 @@ const Home = () => {
   const [treesLocked, setTreesLocked] = useState<boolean>(true);
   const pathname = usePathname();
 
-  console.log("treesLocked", treesLocked);
   // Unlock trees when loading a project
   useEffect(() => {
     if (treesLocked && pathname !== "/") {
       setTreesLocked(false);
     }
-  }, []);
+  }, [treesLocked, pathname]);
 
   // Since app open with scrolling disabled, we need to make sure
   // the browser doesn't preserve scroll position on refresh.
@@ -43,7 +42,6 @@ const Home = () => {
     }
     setTreesLocked(!treesLocked);
   }
-  console.log(`app-container ${treesLocked ? "no-doc-scroll" : ""}`);
   return (
     <RedirectHandler>
       <div className={`app-container ${treesLocked ? "no-doc-scroll" : ""}`}>
