@@ -3,11 +3,6 @@
 import React, { useEffect, useRef } from "react";
 import "./treeViz.css";
 
-interface TreeCanvasProps {
-  gap: number;
-  width: number;
-  height: number;
-}
 // Tree positioning
 const xgap = 20;
 const ygap = 20;
@@ -15,13 +10,13 @@ const ygap = 20;
 const treeHeight = 50; // Maximum height in pixels
 const growSpeed = 0.02; // Percent of tree per frame
 
-const waitTime = 1.2; // Seconds after moving mouse to start growth
+const waitTime = 0.3; // Seconds after moving mouse to start growth
 
 function getDistance(dx: number, dy: number) {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
+export default function TreeCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -236,7 +231,7 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
             ) {
               const distance = getDistance(xdistance, ydistance);
               const impact = 1 - distance / impactRadius;
-              let angle = (impact * mouse_speed) / 100;
+              let angle = (impact * mouse_speed) / 50;
               if (this.x > plant.x) {
                 angle = -angle;
               }
@@ -323,7 +318,7 @@ export default function TreeCanvas({ gap, width, height }: TreeCanvasProps) {
       window.removeEventListener("touchmove", pointer.move.bind(pointer));
       window.removeEventListener("resize", placeTrees);
     };
-  }, [gap, width, height]);
+  }, []);
 
   return (
     <div className="canvas-container">

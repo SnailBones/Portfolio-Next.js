@@ -1,6 +1,6 @@
 import RedirectHandler from "../components/RedirectHandler";
 import "./home.scss";
-import TreeCanvas from "../components/treeViz/treeViz";
+import TreeCanvas from "@/components/treeViz/treeViz";
 import Title from "@/components/Title";
 import PortfolioContainer from "@/components/PortfolioContainer";
 import About from "./about/page";
@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <RedirectHandler>
       <div className="background">
-        <TreeCanvas gap={15} width={10} height={10} />
+        <TreeCanvas />
       </div>
       <div className="app-container">
         <Title />
