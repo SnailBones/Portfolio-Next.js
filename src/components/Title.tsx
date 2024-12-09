@@ -1,7 +1,3 @@
-"use client";
-
-import { useState, useEffect } from "react";
-
 export default function Title({
   isRealName,
   handleClick,
@@ -12,7 +8,7 @@ export default function Title({
   return (
     <div className="screen-space">
       <h1
-        className={`signature ${isRealName ? "secret" : "no-doc-scroll"}`}
+        className={`signature ${isRealName ? "secret" : ""}`}
         onClick={handleClick}
       >
         <span className="l cap">a</span>
