@@ -1,14 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { smoothScrollTo } from "@/utils/smoothScroll";
 
 export default function Title() {
   const [isRealName, setIsRealName] = useState(false);
-  // document.body.style.overflow = isRealName ? "unset" : "hidden";
+
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   function evolve() {
     if (!isRealName) {
+      document.body.style.overflow = "hidden";
       setTimeout(() => {
         smoothScrollTo("#portfolio", 2000);
       }, 1000);

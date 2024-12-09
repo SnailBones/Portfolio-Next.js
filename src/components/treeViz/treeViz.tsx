@@ -203,10 +203,24 @@ export default function TreeCanvas() {
         this.timer = undefined;
       }
 
+      // This prevents the start of a touch from being read as big pointer jump
+      // Instead, only drags on a touch screen have an effect.
+      startTouch(e: TouchEvent) {
+        if (!canvas) return;
+        e.preventDefault();
+        const cursor = e.targetTouches[0];
+        const rect = canvas.getBoundingClientRect();
+        const static_x = cursor.clientX - rect.left;
+        this.px = static_x - centerX;
+        const static_y = cursor.clientY - rect.top;
+        this.py = static_y - centerY;
+      }
+
       move(e: MouseEvent | TouchEvent) {
         if (!canvas) return;
         e.preventDefault();
-        const cursor = e instanceof MouseEvent ? e : e.targetTouches[0];
+        const touch = e instanceof TouchEvent;
+        const cursor = !touch ? e : e.targetTouches[0];
         const rect = canvas.getBoundingClientRect();
         const static_x = cursor.clientX - rect.left;
         this.x = static_x - centerX;
@@ -217,7 +231,7 @@ export default function TreeCanvas() {
         const ymax = plants.length;
         const xmax = plants[0].length;
 
-        const impactRadius = 200;
+        const impactRadius = touch ? 140 : 200;
 
         for (var i = 0; i < ymax; i++) {
           for (var j = 0; j < xmax; j++) {
@@ -231,7 +245,7 @@ export default function TreeCanvas() {
             ) {
               const distance = getDistance(xdistance, ydistance);
               const impact = 1 - distance / impactRadius;
-              let angle = (impact * mouse_speed) / 50;
+              let angle = (impact * mouse_speed) / (touch ? 30 : 50);
               if (this.x > plant.x) {
                 angle = -angle;
               }
@@ -302,8 +316,9 @@ export default function TreeCanvas() {
 
     const pointer = new Pointer();
 
-    window.addEventListener("mousemove", pointer.move.bind(pointer), false);
-    window.addEventListener("touchmove", pointer.move.bind(pointer), false);
+    window.addEventListener("mousemove", pointer.move);
+    window.addEventListener("touchmove", pointer.move);
+    window.addEventListener("touchstart", pointer.startTouch);
     window.addEventListener("resize", placeTrees);
 
     const step = () => {
@@ -314,8 +329,9 @@ export default function TreeCanvas() {
     step();
 
     return () => {
-      window.removeEventListener("mousemove", pointer.move.bind(pointer));
-      window.removeEventListener("touchmove", pointer.move.bind(pointer));
+      window.removeEventListener("mousemove", pointer.move);
+      window.removeEventListener("touchmove", pointer.move);
+      window.removeEventListener("touchstart", pointer.startTouch);
       window.removeEventListener("resize", placeTrees);
     };
   }, []);
