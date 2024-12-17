@@ -60,7 +60,7 @@ export const projects: Project[] = [
     name: "A Tree Falls: the Musical",
     imgSrc: "forest/forest.webm",
     description: "Interactive ecology put to data-driven music.",
-    categories: ["game"],
+    categories: ["game", "game-design"],
     tools: ["C++", "Godot"],
     year: 2020,
   },

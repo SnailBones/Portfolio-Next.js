@@ -1,3 +1,5 @@
+import "./Title.scss";
+
 export default function Title({
   isRealName,
   handleClick,

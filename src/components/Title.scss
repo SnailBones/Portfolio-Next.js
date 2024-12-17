@@ -1,0 +1,109 @@
+.signature {
+  top: 10%;
+  font-family: "Montserrat Alternates", helvetica, sans-serif;
+
+  color: #333;
+  mix-blend-mode: exclusion;
+  will-change: opacity;
+
+  height: 50%;
+  line-height: 0.8;
+  width: 100%;
+
+  text-align: center;
+
+  white-space: nowrap;
+
+  font-size: 192px;
+  @media (min-width: 756px) {
+    font-size: 384px;
+  }
+
+  z-index: 1000;
+
+  user-select: none;
+
+  .l {
+    display: inline-block;
+    position: relative;
+
+    margin: -0.115em;
+
+    transition: 0.4s;
+    mix-blend-mode: screen;
+
+    &.change {
+      text-align: center;
+      &.L1 {
+        text-align: right;
+        transform-origin: right;
+        .start {
+          position: absolute;
+          width: 100%;
+        }
+        .end {
+          position: relative;
+        }
+        transition-delay: 0;
+      }
+      &.T2 {
+        .start {
+        }
+
+        transition-delay: 0.11s;
+      }
+      &.U3 {
+        transition-delay: 0.22s;
+      }
+      &.S4 {
+        transform-origin: left;
+        transition-delay: 0.33s;
+
+        .end {
+          margin-left: 0.085em;
+        }
+      }
+    }
+    transform-origin: right;
+    .start {
+      transition: inherit;
+      position: relative;
+      color: #384235;
+
+      transform-origin: inherit;
+    }
+    .end {
+      transition: inherit;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      color: #393147;
+      mix-blend-mode: normal;
+      opacity: 0;
+      transform: scaleX(-1);
+
+      transform-origin: inherit;
+    }
+    &:hover {
+      color: #bcb2f3;
+      .start {
+        color: #9454ff;
+      }
+      .end {
+        color: #66ce47;
+      }
+    }
+  }
+}
+
+.signature.secret .l.change {
+  .start {
+    opacity: 0;
+    transform: scaleX(-1);
+  }
+  .end {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
