@@ -12,15 +12,21 @@ import Footer from "@/components/Footer";
 import { smoothScrollTo } from "@/utils/smoothScroll";
 
 const Home = () => {
-  const [treesLocked, setTreesLocked] = useState<boolean>(true);
+  const [lockedToTrees, setLockedToTrees] = useState<boolean>(true);
+  const [transitioning, setTransitioning] = useState<boolean>(false);
   const pathname = usePathname();
+  console.log("page. trees locked is", lockedToTrees);
 
   // Unlock trees when loading a project
   useEffect(() => {
-    if (treesLocked && pathname !== "/") {
-      setTreesLocked(false);
+    if (lockedToTrees && pathname !== "/") {
+      setLockedToTrees(false);
     }
-  }, [treesLocked, pathname]);
+    console.log(
+      "page useEffect trigger because lockedToTrees was changed to",
+      lockedToTrees
+    );
+  }, [lockedToTrees, pathname]);
 
   // Since app open with scrolling disabled, we need to make sure
   // the browser doesn't preserve scroll position on refresh.
@@ -31,21 +37,30 @@ const Home = () => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
-  function onClickName() {
-    if (treesLocked) {
-      document.body.style.overflow = "hidden";
-      setTimeout(() => {
-        smoothScrollTo("#portfolio", 2000);
-      }, 1000);
+  async function onClickName() {
+    if (transitioning) return;
+
+    setTransitioning(true);
+    setLockedToTrees(!lockedToTrees);
+
+    if (lockedToTrees) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await smoothScrollTo("#portfolio", 2000);
     } else {
-      smoothScrollTo(".background", 2000);
+      await smoothScrollTo(".background", 2000);
     }
-    setTreesLocked(!treesLocked);
+
+    setTransitioning(false);
   }
+
   return (
     <RedirectHandler>
-      <div className={`app-container ${treesLocked ? "no-doc-scroll" : ""}`}>
-        <Title isRealName={!treesLocked} handleClick={onClickName} />
+      <div
+        className={`app-container ${
+          lockedToTrees || transitioning ? "no-doc-scroll" : ""
+        }`}
+      >
+        <Title isRealName={!lockedToTrees} handleClick={onClickName} />
         <div id="portfolio">
           <PortfolioContainer />
         </div>

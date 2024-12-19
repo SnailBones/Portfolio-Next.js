@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import ProjectText from "./ProjectText";
 import { motion, AnimatePresence } from "framer-motion";
 import { Project } from "../components/Projects";
 import "./VideoSection.scss";
@@ -22,9 +21,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
   onClose,
   animationDelay,
 }) => {
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const autoScrollTimer = useRef<number | NodeJS.Timeout | null>(null);
 
   const expanded = state === "expanded" || state === "description"; // Video takes up fullscreen (or at least > 1/3 screen)
   const collapsed = state === "collapsed";

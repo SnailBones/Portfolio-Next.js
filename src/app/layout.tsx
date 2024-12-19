@@ -2,7 +2,7 @@ import TreeCanvas from "@/components/treeViz/treeViz";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "ai·lan·thus",
+  title: "ailanthus",
   description: "Portfolio of Aidan H",
 };
 
