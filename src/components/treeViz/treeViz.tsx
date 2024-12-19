@@ -6,14 +6,22 @@ import "./treeViz.css";
 // Tree positioning
 const xgap = 20;
 const ygap = 20;
+const column_offset = 5; // Amount of diagonal effect
+const row_offset = 2;
+const bufferSides = 3; // extra trees on each side
+const bufferTopBottom = 4;
 
 const treeHeight = 50; // Maximum height in pixels
-const growSpeed = 0.02; // Percent of tree per frame
+const growRate = 0.02; // Percent of tree per frame
 
 const waitTime = 0.3; // Seconds after moving mouse to start growth
 
 function getDistance(dx: number, dy: number) {
   return Math.sqrt(dx * dx + dy * dy);
+}
+
+function randInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 export default function TreeCanvas() {
@@ -42,11 +50,13 @@ export default function TreeCanvas() {
       y: number;
       height: number;
       angle: number;
-      constructor(height: number) {
-        this.height = height;
+      grow_speed: number;
+      constructor(grow_speed: number) {
+        this.height = 0;
         this.x = 0;
         this.y = 0;
         this.angle = 0;
+        this.grow_speed = grow_speed;
       }
       color() {
         return (
@@ -60,7 +70,15 @@ export default function TreeCanvas() {
         );
       }
       drawMe() {
-        if (!ctx) return;
+        if (
+          !ctx ||
+          !canvas ||
+          this.x < -canvas.width / 2 ||
+          this.x >= canvas.width / 2 ||
+          this.y < -canvas.height / 2 ||
+          this.y >= canvas.height / 2 + treeHeight * this.height
+        )
+          return;
         ctx.lineWidth = 2;
         const sin = Math.sin(this.angle);
         const cos = Math.cos(this.angle);
@@ -83,6 +101,7 @@ export default function TreeCanvas() {
         const oldHeight = this.height;
         const meanFriendHeight = getMeanFriendHeight(y, x);
         const totalFriendHeight = meanFriendHeight * 8;
+        const growSpeed = growRate * this.grow_speed;
         if (this.height === 0) {
           if (totalFriendHeight >= 0.4 && totalFriendHeight < 1) {
             this.height += growSpeed;
@@ -276,11 +295,10 @@ export default function TreeCanvas() {
 
     function createTrees(count_across: number, count_up: number) {
       plants = [];
-      for (let i = 0; i < count_up; i++) {
+      for (let i = -bufferTopBottom; i < count_up + bufferTopBottom * 2; i++) {
         const row = [];
-        for (let j = 0; j < count_across; j++) {
-          const height = Math.random() + 0.25;
-          row.push(new Plant(height));
+        for (let j = -bufferSides; j < count_across + bufferSides * 2; j++) {
+          row.push(new Plant(Math.random() * 2));
         }
         plants.push(row);
       }
@@ -297,20 +315,40 @@ export default function TreeCanvas() {
 
       count_across = Math.floor(canvas.width / xgap);
       count_up = Math.floor(canvas.height / ygap);
+      const true_count_across = count_across + bufferSides * 2;
+      const true_count_up = count_up + bufferTopBottom * 2;
       plants = createTrees(count_across, count_up);
 
-      for (var i = 0; i < plants.length; i++) {
-        for (var j = 0; j < plants[i].length; j++) {
-          const height = i - plants.length / 2;
-          const ypos = ygap * height + ygap * 2;
-          let xpos = xgap * (j - plants[i].length / 2) + height * 2;
-          if (i % 2 === 0) {
-            xpos -= xgap / 2;
+      for (var row = 0; row < plants.length; row++) {
+        for (var col = 0; col < plants[row].length; col++) {
+          const vpos = row - plants.length / 2; // distance in trees from the vertical center
+          const hpos = col - plants[row].length / 2;
+          const ypix = ygap * (vpos + 2) + hpos * -row_offset;
+          let xpix =
+            xgap * (col - plants[row].length / 2) + vpos * column_offset;
+          if (row % 2 === 0) {
+            xpix -= xgap / 2;
           }
-          plants[i][j].x = xpos;
-          plants[i][j].y = ypos;
+          plants[row][col].x = xpix;
+          plants[row][col].y = ypix;
         }
       }
+      const totalTrees = true_count_up * true_count_across;
+      const r = Math.random();
+      const randLow = r * r; // weight toward less adult trees. This makes it seem like more variety.
+      const adult_count = Math.floor((randLow * totalTrees) / 8); // these trees are too big to make babies
+      const baby_count = randInt(1, totalTrees / 1000); // these trees are too small to make babies
+      for (let i = 0; i < adult_count; i++) {
+        const y = Math.floor(Math.random() * true_count_up);
+        const x = Math.floor(Math.random() * true_count_across);
+        plants[y][x].height = Math.random() + 0.75;
+      }
+      for (let i = 0; i < baby_count; i++) {
+        const y = Math.floor(Math.random() * true_count_up);
+        const x = Math.floor(Math.random() * true_count_across);
+        plants[y][x].height = Math.random() / 2;
+      }
+
       active = true; // grow to clear excess trees before render
     }
 
