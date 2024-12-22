@@ -59,13 +59,28 @@
   height: 30px;
   background-color: $color-dark;
   color: $color-light;
-  border: none;
-  border-radius: 25% 25% 0 0;
+  border: solid 3px $color-grey;
+  border-width: 3px 3px 0 3px;
+
   cursor: pointer;
   z-index: 1000;
+  transition: 0.5s;
+
+  .arrow {
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
+    transform-origin: center 0.9em;
+    transition: 0.5s;
+    &.expanded {
+      transform: translateX(-50%) translateY(-50%) rotate(180deg);
+    }
+  }
 }
 
 .portfolio-instructions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
   h2 {
     font-size: 2rem;
@@ -94,7 +109,6 @@
 
   background-color: none;
   border: solid 3px $color-grey;
-  border-style: solid;
   border-radius: 8px;
   transition: 0.2s;
 

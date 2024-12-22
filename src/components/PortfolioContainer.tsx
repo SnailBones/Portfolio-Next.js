@@ -206,7 +206,9 @@ const PortfolioContainer = () => {
           className={`toggle-button ${!!expandedSection ? "hidden" : ""}`}
           onClick={toggleControls}
         >
-          <span className="arrow">{controlsVisible ? "▼" : "▲"}</span>
+          <span className={`arrow ${controlsVisible ? "expanded" : ""}`}>
+            ▲
+          </span>
         </button>
         <div
           className={`controls ${

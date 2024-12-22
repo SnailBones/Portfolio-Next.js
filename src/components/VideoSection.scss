@@ -93,13 +93,11 @@
 
 .nav-button {
   position: absolute;
-  top: 50%; // Center vertically
-  cursor: pointer; // Change cursor to pointer on hover
+  cursor: pointer;
   margin: auto;
-  width: fit-content;
-  padding: 16px;
-  border-radius: 40px;
-  border: 4px solid; // removing white border
+  width: 1.5em;
+  height: 1.5em;
+  border: 4px solid;
   font-size: 32px;
   font-weight: bold;
   z-index: 1;
@@ -109,10 +107,10 @@
 
   aspect-ratio: 1;
 
-  transition: 0.3s;
+  transition: 0.1s;
 
   &:hover {
-    opacity: 0.6;
+    opacity: 0.8;
     transform: scale(1.1);
   }
 
@@ -138,7 +136,7 @@
     top: 10px;
     left: 10px;
     .inner-button {
-      margin-top: -0.5em;
+      margin-top: -0.2em;
     }
   }
 }
