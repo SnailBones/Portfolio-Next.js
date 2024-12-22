@@ -6,12 +6,12 @@ import "./treeViz.css";
 // Tree positioning
 const xgap = 20;
 const ygap = 20;
-const column_offset = 5; // Amount of diagonal effect
+const column_offset = 6; // Amount of diagonal effect
 const row_offset = 2;
 const bufferSides = 3; // extra trees on each side
 const bufferTopBottom = 4;
 
-const treeHeight = 50; // Maximum height in pixels
+const treeHeight = 65; // Maximum height in pixels
 const growRate = 0.02; // Percent of tree per frame
 
 const waitTime = 0.3; // Seconds after moving mouse to start growth
