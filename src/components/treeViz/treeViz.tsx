@@ -238,7 +238,7 @@ export default function TreeCanvas() {
       move(e: MouseEvent | TouchEvent) {
         if (!canvas) return;
         e.preventDefault();
-        const touch = e instanceof TouchEvent;
+        const touch = "touches" in e;
         const cursor = !touch ? e : e.targetTouches[0];
         const rect = canvas.getBoundingClientRect();
         const static_x = cursor.clientX - rect.left;
