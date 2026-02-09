@@ -33,6 +33,7 @@ body {
   overflow: hidden;
 }
 
+
 .smallfade {
   background: #181a20;
   display: inline-block;
@@ -43,7 +44,7 @@ body {
   position: relative;
   &:after {
     border-radius: 100%;
-    transition: 0.33s;
+    transition: box-shadow 0.2s;
 
     content: "";
 
@@ -56,10 +57,12 @@ body {
     z-index: 10;
 
     mix-blend-mode: difference;
+    transform: rotate(0deg);
   }
   &:hover:after {
-    box-shadow: 0 0 8px 8px $color-light, 0 0 8px 24px $color-light;
-    background: $color-light;
+    box-shadow: 0 0 8px 8px $color-light, 0 0 0px 27px $color-light;
+    transform:rotate(360deg);
+    transition: 0.2s; // Rotate the growing shadow
   }
 }
 
@@ -89,7 +92,6 @@ body {
 }
 
 .dark-overlay {
-  height: 100%;
   position: relative;
   &:after {
     content: "";
@@ -101,6 +103,9 @@ body {
     z-index: -1;
     width: 100%;
     height: 100%;
+  }
+  &.fade-in:after{
+      background: linear-gradient(180deg, #0000 0px, $color-dark 400px);
   }
 }
 

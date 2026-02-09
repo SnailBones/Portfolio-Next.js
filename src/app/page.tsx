@@ -45,7 +45,7 @@ const Home = () => {
 
     if (lockedToTrees) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      await smoothScrollTo("#portfolio", 2000);
+      await smoothScrollTo("#about", 2000);
     } else {
       await smoothScrollTo(".background", 2000);
     }
@@ -61,14 +61,14 @@ const Home = () => {
         }`}
       >
         <Title isRealName={!lockedToTrees} handleClick={onClickName} />
-        <div id="portfolio">
-          <PortfolioContainer />
-        </div>
 
         <div>
-          <div className="dark-overlay">
+          <div className="dark-overlay fade-in">
             <div className="screen-space">
               <About />
+            </div>
+            <div id="portfolio">
+              <PortfolioContainer />
             </div>
             <div className="screen-space">
               <ContactForm />
